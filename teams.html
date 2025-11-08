@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIC — Teams</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --iic-blue:#1E3A8A;
+      --iic-orange:#F97316;
+      --iic-light:#F0F9FF;
+      --white:rgba(255,255,255,0.7);
+      --white-solid:#FFFFFF;
+      --text-dark:#1F2937;
+      --text-muted:#6B7280;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      font-family:Poppins,system-ui;
+      background:#F0F9FF;
+      color:var(--text-dark);
+      position:relative;
+    }
+
+      body::before{
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      filter: brightness(1.1);
+    }
+    a{text-decoration:none;color:inherit}
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 40px;
+      background:rgba(255,255,255,0.9);
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      z-index:100;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+    .brand{font-weight:700;color:var(--iic-blue);font-size:18px;display:flex;align-items:center;gap:10px}
+    nav{display:flex;gap:32px}
+    nav a{font-size:14px;color:var(--text-muted);font-weight:500;transition:.3s}
+    nav a:hover{color:var(--iic-orange)}
+
+      @media(max-width:768px){
+      header{padding:16px 20px}
+      nav{gap:16px;font-size:12px}
+      body::before{width:300px;height:300px;opacity:0.1;}
+    }
+
+    main{max-width:1400px;margin:auto;padding:40px 20px 80px;position:relative;z-index:1}
+
+    /* HERO SECTION */
+    .hero-teams{
+      position:relative;
+      padding:80px 40px;
+      margin-bottom:60px;
+      background:rgba(255,255,255,0.7);
+      backdrop-filter:blur(10px);
+      border-radius:24px;
+      border:2px solid rgba(30,58,138,0.1);
+      overflow:hidden;
+    }
+
+    .hero-teams::before{
+      content:'';
+      position:absolute;
+      top:0;left:0;right:0;bottom:0;
+      background:linear-gradient(135deg, rgba(30,58,138,0.05) 0%, rgba(249,115,22,0.05) 100%);
+      z-index:0;
+    }
+
+    .hero-teams-content{
+      position:relative;
+      z-index:1;
+      max-width:800px;
+      margin:0 auto;
+      text-align:center;
+      opacity:0;
+    }
+
+    .hero-teams h1{
+      font-size:56px;
+      font-weight:700;
+      margin:0 0 20px;
+      color:var(--iic-blue);
+    }
+
+    .hero-teams p{
+      font-size:20px;
+      color:var(--text-dark);
+      line-height:1.7;
+      margin:0;
+    }
+
+    .hero-stats{
+      display:flex;
+      justify-content:center;
+      gap:60px;
+      margin-top:40px;
+    }
+
+    .stat-item{
+      text-align:center;
+      padding:20px 30px;
+      background:rgba(255,255,255,0.8);
+      border-radius:16px;
+      border:2px solid rgba(30,58,138,0.1);
+    }
+
+    .stat-number{
+      font-size:42px;
+      font-weight:700;
+      color:var(--iic-orange);
+      display:block;
+      margin-bottom:8px;
+      opacity:0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-label{
+      font-size:14px;
+      color:var(--text-muted);
+      font-weight:500;
+    }
+
+    @media(max-width:768px){
+      .hero-stats{gap:30px;flex-wrap:wrap;}
+      .stat-item{min-width:120px;}
+    }
+
+    /* TEAM SECTIONS */
+    .team-section{margin-bottom:100px;}
+
+    .section-intro{
+      max-width:900px;
+      margin:0 auto 60px;
+      display:flex;
+      align-items:center;
+      gap:40px;
+      padding:40px;
+      background:rgba(255,255,255,0.7);
+      backdrop-filter:blur(10px);
+      border-radius:20px;
+      border:2px solid rgba(30,58,138,0.1);
+    }
+
+    .section-intro.reverse{flex-direction:row-reverse;}
+
+    .section-icon{
+      flex-shrink:0;
+      width:120px;
+      height:120px;
+      background:linear-gradient(135deg, var(--iic-blue), var(--iic-orange));
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:50px;
+      box-shadow:0 8px 24px rgba(30,58,138,0.2);
+      opacity:0;
+    }
+
+    .section-text h2{
+      font-size:32px;
+      color:var(--iic-blue);
+      margin:0 0 12px;
+      font-weight:700;
+    }
+
+    .section-text p{
+      color:var(--text-muted);
+      font-size:16px;
+      line-height:1.6;
+      margin:0;
+    }
+
+    .section-text{opacity:0;}
+
+    /* TEAM CARDS */
+    .team-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+      gap:24px;
+    }
+
+    .member-card{
+      background:rgba(255,255,255,0.7);
+      backdrop-filter:blur(10px);
+      border-radius:16px;
+      padding:28px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      border:2px solid rgba(30,58,138,0.1);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      opacity:0;
+    }
+
+    .member-card:hover{
+      transform: translateY(-12px) rotateX(5deg) rotateY(5deg);
+      box-shadow: 0 20px 50px rgba(30,58,138,0.2);
+      border-color:var(--iic-orange);
+      background:rgba(255,255,255,0.9);
+    }
+
+    .member-avatar{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:linear-gradient(135deg, rgba(30,58,138,0.1), rgba(249,115,22,0.1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:50px;
+      color:rgba(30,58,138,0.3);
+      border:3px solid rgba(30,58,138,0.15);
+      overflow:hidden;
+      margin-bottom:20px;
+      transition: all 0.4s ease;
+    }
+
+    .member-card:hover .member-avatar{
+      animation: pulseGlow 1.5s infinite;
+      border-color: var(--iic-orange);
+    }
+
+    .member-name{
+      font-size:20px;
+      font-weight:700;
+      color:var(--iic-blue);
+      margin:0 0 8px;
+      transition: all 0.3s ease;
+    }
+
+    .member-card:hover .member-name{
+      color: var(--iic-orange);
+      text-shadow: 0 0 8px rgba(249,115,22,0.4);
+    }
+
+    .member-role{
+      font-size:13px;
+      font-weight:600;
+      color:var(--white-solid);
+      background:var(--iic-orange);
+      padding:4px 14px;
+      border-radius:20px;
+      margin-bottom:16px;
+      display:inline-block;
+    }
+
+    .member-bio{
+      font-size:14px;
+      color:var(--text-muted);
+      line-height:1.6;
+      margin:0 0 16px;
+      flex:1;
+    }
+
+    .member-social{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+    }
+
+    .social-btn{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:rgba(30,58,138,0.1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--iic-blue);
+      transition:all .3s ease;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .social-btn:hover{
+      background:var(--iic-blue);
+      color:var(--white-solid);
+      transform:scale(1.2);
+    }
+
+    .team-grid.leadership{
+      grid-template-columns:repeat(auto-fit, minmax(400px, 1fr));
+      max-width:900px;
+      margin:0 auto;
+    }
+
+    @media(max-width:768px){
+      .section-intro{flex-direction:column!important;text-align:center;padding:30px 20px;gap:24px;}
+      .section-icon{width:100px;height:100px;font-size:40px;}
+      .section-text h2{font-size:26px}
+      .team-grid, .team-grid.leadership{grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));}
+    }
+
+    .divider{
+      height:2px;
+      background:linear-gradient(90deg, transparent, var(--iic-orange), transparent);
+      margin:80px auto;
+      max-width:400px;
+      opacity:0.4;
+      transform: scaleX(0);
+      transform-origin: left;
+      opacity:0;
+    }
+
+    footer{
+      background:rgba(30,58,138,0.95);
+      color:rgba(255,255,255,0.9);
+      padding:40px 20px;
+      text-align:center;
+      font-size:14px;
+      margin-top:80px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translate3d(0,30px,0); }
+      to   { opacity:1; transform:translate3d(0,0,0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity:0; transform:translate3d(-40px,0,0); }
+      to   { opacity:1; transform:translate3d(0,0,0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity:0; transform:translate3d(40px,0,0); }
+      to   { opacity:1; transform:translate3d(0,0,0); }
+    }
+    @keyframes scaleIn {
+      from { opacity:0; transform:scale(0.95); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    @keyframes drawLine {
+      to { transform: scaleX(1); opacity:1; }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.4); }
+      50% { box-shadow: 0 0 20px 8px rgba(249,115,22,0.3); }
+    }
+
+    .animate {
+      animation-duration: 0.8s;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .animate.fadeInUp    { animation-name: fadeInUp; }
+    .animate.fadeInLeft  { animation-name: fadeInLeft; }
+    .animate.fadeInRight { animation-name: fadeInRight; }
+    .animate.scaleIn     { animation-name: scaleIn; }
+    .animate.drawLine    { animation-name: drawLine; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">IIC</div>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="teams.html">Teams</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION WITH ANIMATED COUNTER -->
+    <div class="hero-teams">
+      <div class="hero-teams-content">
+        <h1>Meet Our Team</h1>
+        <p>A collective of passionate innovators, mentors, and leaders dedicated to fostering entrepreneurship and driving meaningful change across our institution.</p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number" data-target="28">0</span>
+            <span class="stat-label">Team Members</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="7">0</span>
+            <span class="stat-label">Departments</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="100" data-plus="true">0</span>
+            <span class="stat-label">Events Organized</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IIC CO-ORDINATORS -->
+    <div class="team-section">
+      <div class="section-intro">
+        <div class="section-icon">🎓</div>
+        <div class="section-text">
+          <h2>IIC Co-ordinators</h2>
+          <p>Our faculty coordinators provide academic guidance and institutional support, bridging the gap between innovation initiatives and curriculum integration. They ensure IIC's alignment with educational objectives while fostering an entrepreneurial ecosystem.</p>
+        </div>
+      </div>
+
+      <div class="team-grid leadership">
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Faculty Name</h3>
+          <span class="member-role">IIC Co-ordinator</span>
+          <p class="member-bio">Experienced faculty member guiding students in innovation and entrepreneurship initiatives.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Faculty Name</h3>
+          <span class="member-role">IIC Co-ordinator</span>
+          <p class="member-bio">Dedicated educator fostering entrepreneurial mindset and supporting innovative projects.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- IIC PRESIDENTS -->
+    <div class="team-section">
+      <div class="section-intro reverse">
+        <div class="section-icon">👑</div>
+        <div class="section-text">
+          <h2>IIC Presidents</h2>
+          <p>Student leaders who spearhead IIC activities and represent the innovation council. They coordinate between various teams, drive strategic initiatives, and ensure effective execution of all programs while maintaining a vibrant entrepreneurial culture on campus.</p>
+        </div>
+      </div>
+
+      <div class="team-grid leadership">
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Student Name</h3>
+          <span class="member-role">IIC President</span>
+          <p class="member-bio">Leading IIC initiatives with vision and dedication to foster innovation culture.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Student Name</h3>
+          <span class="member-role">IIC President</span>
+          <p class="member-bio">Driving entrepreneurial excellence and coordinating team efforts across departments.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- PUBLIC RELATIONS -->
+    <div class="team-section">
+      <div class="section-intro">
+        <div class="section-icon">🤝</div>
+        <div class="section-text">
+          <h2>Public Relations</h2>
+          <p>Our PR team builds and maintains relationships with external stakeholders, media, industry partners, and alumni. They manage IIC's public image, coordinate outreach programs, and create strategic partnerships that enhance our institution's innovation ecosystem.</p>
+        </div>
+      </div>
+
+      <div class="team-grid">
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">PR Team</span>
+          <p class="member-bio">Managing external relations and building strategic partnerships.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">PR Team</span>
+          <p class="member-bio">Coordinating outreach initiatives and stakeholder engagement.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">PR Team</span>
+          <p class="member-bio">Facilitating communication with media and industry partners.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">PR Team</span>
+          <p class="member-bio">Enhancing IIC's visibility and managing corporate relations.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">PR Team</span>
+          <p class="member-bio">Developing community partnerships and alumni engagement programs.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- EVENTS TEAM -->
+    <div class="team-section">
+      <div class="section-intro reverse">
+        <div class="section-icon">🎉</div>
+        <div class="section-text">
+          <h2>Events</h2>
+          <p>The events team conceptualizes and executes all IIC programs including hackathons, workshops, competitions, and seminars. They handle logistics, vendor coordination, participant management, and ensure every event creates memorable learning experiences that inspire innovation.</p>
+        </div>
+      </div>
+
+      <div class="team-grid">
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Events Team</span>
+          <p class="member-bio">Planning and executing innovative programs and workshops.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Events Team</span>
+          <p class="member-bio">Coordinating logistics and ensuring seamless event execution.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Events Team</span>
+          <p class="member-bio">Managing participant engagement and event registration processes.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Events Team</span>
+          <p class="member-bio">Handling venue coordination and technical requirements for events.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Events Team</span>
+          <p class="member-bio">Supporting event operations and ensuring quality experiences.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- DRAFTS TEAM -->
+    <div class="team-section">
+      <div class="section-intro">
+        <div class="section-icon">✍️</div>
+        <div class="section-text">
+          <h2>Drafts</h2>
+          <p>The drafts team handles all documentation, proposal writing, and official communications. They craft compelling narratives for funding applications, prepare reports, design newsletters, and ensure professional documentation of all IIC activities and achievements.</p>
+        </div>
+      </div>
+
+      <div class="team-grid">
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Drafts Team</span>
+          <p class="member-bio">Creating compelling content and official documentation for IIC.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Drafts Team</span>
+          <p class="member-bio">Writing proposals and preparing professional reports.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Drafts Team</span>
+          <p class="member-bio">Designing newsletters and crafting engaging narratives.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Drafts Team</span>
+          <p class="member-bio">Managing documentation and maintaining records of activities.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Drafts Team</span>
+          <p class="member-bio">Editing and proofreading all official communications.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SOCIAL MEDIA TEAM -->
+    <div class="team-section">
+      <div class="section-intro reverse">
+        <div class="section-icon">📱</div>
+        <div class="section-text">
+          <h2>Social Media</h2>
+          <p>Our social media team amplifies IIC's digital presence across platforms. They create engaging content, manage community interactions, track analytics, run campaigns, and ensure consistent brand messaging that resonates with students, entrepreneurs, and stakeholders.</p>
+        </div>
+      </div>
+
+      <div class="team-grid">
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Social Media Team</span>
+          <p class="member-bio">Managing IIC's social media presence and engagement strategies.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Social Media Team</span>
+          <p class="member-bio">Creating visual content and graphics for digital platforms.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Social Media Team</span>
+          <p class="member-bio">Running campaigns and tracking social media analytics.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Social Media Team</span>
+          <p class="member-bio">Building online community and managing audience interactions.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Social Media Team</span>
+          <p class="member-bio">Developing content calendars and maintaining brand consistency.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- WEB DESIGNING TEAM -->
+    <div class="team-section">
+      <div class="section-intro">
+        <div class="section-icon">💻</div>
+        <div class="section-text">
+          <h2>Web Designing</h2>
+          <p>The web designing team develops and maintains IIC's digital infrastructure. They create user-friendly websites, design interfaces, implement features, ensure responsive design, and provide technical solutions that enhance online user experience and accessibility.</p>
+        </div>
+      </div>
+
+      <div class="team-grid">
+        <div class="member-card">
+          <div class="member-avatar">Person</div>
+          <h3 class="member-name">Member Name</h3>
+          <span class="member-role">Web Design Team</span>
+          <p class="member-bio">Developing and maintaining IIC's website and digital platforms.</p>
+          <div class="member-social">
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">@</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 IIC. All rights reserved.
+  </footer>
+
+  <!-- FINAL ANIMATION + COUNTER SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+
+            // HERO: Animate content + trigger counter
+            if (el.classList.contains('hero-teams-content')) {
+              el.classList.add('animate', 'scaleIn');
+
+              // Start number counter
+              document.querySelectorAll('.stat-number').forEach(stat => {
+                const target = +stat.getAttribute('data-target');
+                const isPlus = stat.hasAttribute('data-plus');
+                let start = 0;
+                const duration = 1500;
+                const increment = target / (duration / 16);
+
+                const timer = setInterval(() => {
+                  start += increment;
+                  if (start >= target) {
+                    stat.textContent = target + (isPlus ? '+' : '');
+                    stat.style.opacity = '1';
+                    clearInterval(timer);
+                  } else {
+                    stat.textContent = Math.floor(start) + (isPlus ? '+' : '');
+                  }
+                }, 16);
+
+                stat.style.opacity = '1';
+              });
+            }
+
+            // Section Intro
+            if (el.classList.contains('section-icon')) {
+              const reverse = el.parentElement.classList.contains('reverse');
+              el.classList.add('animate', reverse ? 'fadeInRight' : 'fadeInLeft');
+            }
+            if (el.classList.contains('section-text')) {
+              const reverse = el.parentElement.classList.contains('reverse');
+              el.classList.add('animate', reverse ? 'fadeInLeft' : 'fadeInRight');
+            }
+
+            // Member Cards
+            if (el.classList.contains('member-card')) {
+              const cards = el.parentElement.querySelectorAll('.member-card');
+              const i = Array.from(cards).indexOf(el);
+              el.style.animationDelay = `${i * 0.12}s`;
+              el.classList.add('animate', 'fadeInUp');
+            }
+
+            // Divider
+            if (el.classList.contains('divider')) {
+              el.classList.add('animate', 'drawLine');
+            }
+
+            observer.unobserve(el);
+          }
+        });
+      }, { threshold: 0.3, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.hero-teams-content, .section-icon, .section-text, .member-card, .divider')
+              .forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
