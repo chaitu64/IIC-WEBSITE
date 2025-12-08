@@ -6,6 +6,9 @@
   <title>IIC — Calendar</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* =========================================
+       1. GLOBAL VARIABLES & THEME
+       ========================================= */
     :root{
       --navy:#2E2A8F;
       --orange:#F4A238;
@@ -15,51 +18,119 @@
       --card-bg:#FFFFFF;
       --muted:#6b6b6b;
       --border:#E8E7E3;
+      --gap:24px;
+      --container:1200px;
       --radius:16px;
+      --success: #28a745;
+      --completed: #6c757d;
     }
 
     *{box-sizing:border-box}
-    html,body{margin:0;font-family:Poppins,system-ui;background:var(--bg);color:#111;overflow-x:hidden}
-    a{text-decoration:none;color:inherit}
+    html,body{height:100%;margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;scroll-behavior:smooth}
+    a{color:inherit;text-decoration:none}
 
+    /* ==== BACKGROUND LOGO WATERMARK ==== */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.02) 100%),
+        url("images/IIC.png") center/500px auto no-repeat;
+      opacity:0.15;
+      z-index:-1;
+      transform:translateZ(0);
+      pointer-events: none;
+    }
+
+    .wrap{
+      width:100vw;
+      margin:0;
+      padding:0;
+      background: transparent !important;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* =========================================
+       2. HEADER
+       ========================================= */
     header{
       display:flex;
-      justify-content:space-between;
+      justify-content:center;
       align-items:center;
-      padding:20px 40px;
-      background:rgba(250,249,247,0.95);
-      backdrop-filter:blur(8px);
-      position:sticky;
-      top:0;
+      padding:20px 40px 20px 40px;
+      margin-bottom:0;
+      position:relative;
+      background:transparent !important;
       z-index:100;
-      box-shadow:0 1px 0 #eee;
+      box-shadow:none;
     }
-    .brand{font-weight:700;color:var(--navy);font-size:18px;display:flex;align-items:center;gap:10px}
-    nav{display:flex;gap:32px}
-    nav a{font-size:14px;color:var(--muted);font-weight:500;transition:.3s}
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      gap: 48px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:18px;
+      color:var(--navy)
+    }
+    .brand img{
+      height:40px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,0.02));
+    }
+    nav{
+      display:flex;
+      gap:32px;
+      align-items:center
+    }
+    nav a{
+      font-size:14px;
+      color:var(--muted);
+      transition:color .2s ease;
+      font-weight:500
+    }
     nav a:hover{color:var(--navy)}
-
     @media(max-width:768px){
-      header{padding:16px 20px}
-      nav{gap:16px;font-size:12px}
+      nav{display:none}
+      header{padding:16px 0;margin-bottom:8px}
+      .brand{font-size:16px}
+      .header-inner{justify-content: flex-start; padding: 0 20px;}
     }
 
-    main{max-width:1400px;margin:auto;padding:60px 20px}
+    /* =========================================
+       3. CALENDAR PAGE STYLES
+       ========================================= */
+    
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
 
-    /* HERO SECTION */
     .hero-calendar{
       text-align:center;
       margin-bottom:60px;
-      padding:50px 30px;
-      background:linear-gradient(135deg,rgba(46,42,143,0.07),rgba(244,162,56,0.04));
-      border-radius:var(--radius);
+      padding:40px 20px;
     }
 
     .hero-calendar h1{
       font-size:48px;
       font-weight:700;
       margin:0 0 16px;
-      background:linear-gradient(135deg,var(--navy),var(--purple));
+      background:linear-gradient(135deg, var(--navy), var(--purple));
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
       background-clip:text;
@@ -73,28 +144,26 @@
       line-height:1.6;
     }
 
-    @media(max-width:768px){
-      .hero-calendar{padding:30px 15px;margin-bottom:40px}
-      .hero-calendar h1{font-size:32px}
-      .hero-calendar p{font-size:16px}
+    /* Glass Card Style */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 24px 0 rgba(46,42,143,0.08);
+      border: 1px solid rgba(255,255,255,0.6);
+      padding: 30px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    /* CALENDAR CONTAINER */
     .calendar-wrapper{
       display:grid;
       grid-template-columns:1fr 400px;
       gap:32px;
       margin-bottom:60px;
     }
-
-    /* CALENDAR */
-    .calendar{
-      background:var(--card-bg);
-      border-radius:var(--radius);
-      box-shadow:0 4px 20px rgba(0,0,0,0.05);
-      padding:30px;
-      overflow:hidden;
-    }
+    
+    .calendar { overflow: hidden; }
 
     .calendar-header{
       display:flex;
@@ -104,24 +173,24 @@
     }
 
     .calendar-nav{
-      background:none;
-      border:none;
-      font-size:24px;
-      color:var(--navy);
-      cursor:pointer;
-      padding:8px 16px;
-      transition:.3s;
-      font-weight:700;
-      border-radius:8px;
+      background: linear-gradient(135deg,var(--orange),#F59A4C);
+      border: none;
+      font-size: 18px;
+      color: white;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .3s ease;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(244,162,56,0.3);
     }
-
     .calendar-nav:hover{
-      background:var(--bg);
-      color:var(--orange);
-    }
-
-    .calendar-nav:active{
-      transform:scale(0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(244,162,56,0.4);
     }
 
     .calendar-title{
@@ -138,13 +207,14 @@
       gap:12px;
       margin-bottom:12px;
     }
-
     .weekday{
       text-align:center;
       font-weight:600;
       color:var(--muted);
       font-size:13px;
       padding:12px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .days{
@@ -152,7 +222,6 @@
       grid-template-columns:repeat(7,1fr);
       gap:12px;
     }
-
     .day{
       aspect-ratio:1;
       display:flex;
@@ -160,27 +229,26 @@
       justify-content:center;
       border-radius:12px;
       cursor:pointer;
-      transition:all .3s ease;
+      transition:all .2s ease;
       font-weight:500;
       font-size:14px;
       position:relative;
-      background:var(--bg);
-      color:#333;
+      background: rgba(255,255,255,0.5);
+      color: var(--navy);
+      border: 1px solid transparent;
     }
-
     .day:hover:not(.empty):not(.other-month){
-      background:var(--card-bg);
-      border:2px solid var(--border);
+      background: white;
+      border-color: var(--orange);
       transform:translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .day.event-day{
-      background:linear-gradient(135deg,var(--orange),#F59A4C);
-      color:white;
+      background:linear-gradient(135deg, rgba(46,42,143,0.1), rgba(107,91,168,0.1));
+      color: var(--navy);
       font-weight:700;
-      position:relative;
     }
-
     .day.event-day::after{
       content:'';
       position:absolute;
@@ -189,35 +257,26 @@
       transform:translateX(-50%);
       width:6px;
       height:6px;
-      background:white;
+      background: var(--orange);
       border-radius:50%;
     }
 
-    .day.event-day:hover{
-      transform:translateY(-4px);
-      box-shadow:0 8px 24px rgba(244,162,56,0.4);
-    }
-
     .day.event-day.selected{
-      box-shadow:0 0 0 3px var(--navy);
+      background: var(--navy);
+      color: white;
+      box-shadow: 0 4px 12px rgba(46,42,143,0.3);
     }
-
+    .day.event-day.selected::after{
+      background: white;
+    }
     .day.other-month{
-      color:#ddd;
+      color: #ccc;
       cursor:default;
+      background: transparent;
     }
 
-    .day.empty{
-      background:transparent;
-      cursor:default;
-    }
-
-    /* EVENT DETAILS SIDEBAR */
+    /* Sidebar Styling */
     .event-details-sidebar{
-      background:var(--card-bg);
-      border-radius:var(--radius);
-      box-shadow:0 4px 20px rgba(0,0,0,0.05);
-      padding:32px;
       height:fit-content;
       position:sticky;
       top:100px;
@@ -225,102 +284,96 @@
 
     .sidebar-header{
       font-size:14px;
-      color:var(--muted);
-      font-weight:600;
+      color:var(--orange);
+      font-weight:700;
       margin-bottom:8px;
       text-transform:uppercase;
-      letter-spacing:0.5px;
+      letter-spacing:1px;
     }
 
     .event-title{
-      font-size:28px;
+      font-size:26px;
       font-weight:700;
       color:var(--navy);
       margin:0 0 16px;
       line-height:1.2;
     }
 
+    /* Status Badges */
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .status-badge.upcoming {
+      background: rgba(40, 167, 69, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+    .status-badge.completed {
+      background: rgba(108, 117, 125, 0.1);
+      color: var(--completed);
+      border: 1px solid rgba(108, 117, 125, 0.2);
+    }
+
     .event-type-badge{
       display:inline-block;
       background:linear-gradient(135deg,rgba(244,162,56,0.15),rgba(107,91,168,0.15));
       color:var(--navy);
-      padding:8px 16px;
+      padding:6px 14px;
       border-radius:999px;
-      font-size:13px;
+      font-size:12px;
       font-weight:600;
       margin-bottom:24px;
+      margin-left: 8px;
     }
 
     .event-description{
       color:var(--muted);
-      line-height:1.8;
+      line-height:1.7;
       margin-bottom:24px;
-      font-size:15px;
+      font-size:14px;
     }
 
     .event-info-grid{
-      background:var(--bg);
+      background: rgba(240, 240, 245, 0.5);
       padding:20px;
       border-radius:12px;
       border-left:4px solid var(--orange);
     }
-
     .info-row{
       display:flex;
       align-items:flex-start;
       margin-bottom:16px;
       gap:12px;
     }
-
     .info-row:last-child{margin-bottom:0}
-
-    .info-icon{
-      font-size:18px;
-      color:var(--orange);
-      min-width:24px;
-    }
-
-    .info-content{
-      flex:1;
-    }
-
-    .info-label{
-      font-size:12px;
-      font-weight:600;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      margin-bottom:4px;
-    }
-
-    .info-value{
-      font-size:15px;
-      color:var(--navy);
-      font-weight:500;
-    }
+    .info-icon{font-size:18px;color:var(--orange);min-width:24px;}
+    .info-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:2px;}
+    .info-value{font-size:14px;color:var(--navy);font-weight:600;}
 
     .view-details-btn{
       width:100%;
       padding:14px 24px;
-      background:linear-gradient(135deg,var(--navy),var(--purple));
+      background:linear-gradient(135deg, var(--navy), var(--purple));
       color:white;
       border:none;
-      border-radius:12px;
+      border-radius:999px;
       font-size:15px;
       font-weight:600;
       cursor:pointer;
       transition:all .3s ease;
       margin-top:24px;
-      font-family:Poppins,system-ui;
+      box-shadow:0 8px 24px rgba(46,42,143,0.2);
     }
-
     .view-details-btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 8px 24px rgba(46,42,143,0.3);
-    }
-
-    .view-details-btn:active{
-      transform:translateY(0);
+      transform:translateY(-4px);
+      box-shadow:0 12px 36px rgba(46,42,143,0.3);
     }
 
     .no-event-selected{
@@ -328,27 +381,22 @@
       padding:60px 20px;
       color:var(--muted);
     }
-
     .no-event-selected svg{
-      width:80px;
-      height:80px;
+      width:64px;
+      height:64px;
       margin-bottom:16px;
-      opacity:0.3;
+      opacity:0.2;
+      color: var(--navy);
     }
 
-    .no-event-selected p{
-      font-size:16px;
-      margin:0;
-    }
-
-    /* MODAL */
+    /* Modal Styling */
     .modal-overlay{
       position:fixed;
       top:0;
       left:0;
       right:0;
       bottom:0;
-      background:rgba(0,0,0,0.7);
+      background:rgba(46,42,143,0.3);
       backdrop-filter:blur(8px);
       z-index:1000;
       display:none;
@@ -357,43 +405,28 @@
       padding:20px;
       animation:fadeIn 0.3s ease;
     }
-
-    .modal-overlay.active{
-      display:flex;
-    }
-
-    @keyframes fadeIn{
-      from{opacity:0}
-      to{opacity:1}
-    }
+    .modal-overlay.active{display:flex;}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
     .modal-content{
-      background:var(--card-bg);
-      border-radius:var(--radius);
+      background: white;
+      border-radius:24px;
       max-width:900px;
       width:100%;
       max-height:90vh;
       overflow-y:auto;
       position:relative;
       animation:slideUp 0.3s ease;
-      box-shadow:0 20px 60px rgba(0,0,0,0.3);
+      box-shadow:0 24px 80px rgba(0,0,0,0.2);
     }
+    @keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-    @keyframes slideUp{
-      from{transform:translateY(50px);opacity:0}
-      to{transform:translateY(0);opacity:1}
-    }
-
-    .modal-header{
-      padding:40px 40px 0;
-      position:relative;
-    }
-
+    .modal-header{padding:40px 40px 0; position:relative;}
     .modal-close{
       position:absolute;
-      top:20px;
-      right:20px;
-      background:var(--bg);
+      top:24px;
+      right:24px;
+      background:#f0f0f0;
       border:none;
       width:40px;
       height:40px;
@@ -407,12 +440,7 @@
       justify-content:center;
       z-index:10;
     }
-
-    .modal-close:hover{
-      background:var(--border);
-      color:var(--navy);
-      transform:rotate(90deg);
-    }
+    .modal-close:hover{background:var(--red);color:white;}
 
     .modal-event-badge{
       display:inline-block;
@@ -424,790 +452,365 @@
       font-weight:600;
       margin-bottom:16px;
     }
+    .modal-event-title{font-size:32px;font-weight:700;color:var(--navy);margin:0 0 12px;line-height:1.2;}
+    .modal-event-date{font-size:16px;color:var(--muted);margin-bottom:32px;display:flex;align-items:center;gap:8px;font-weight: 500;}
 
-    .modal-event-title{
-      font-size:36px;
-      font-weight:700;
-      color:var(--navy);
-      margin:0 0 12px;
-      line-height:1.2;
-    }
+    .modal-body{padding:0 40px 40px;}
+    .modal-section{margin-bottom:32px;}
+    .modal-section-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:12px;}
 
-    .modal-event-date{
-      font-size:16px;
-      color:var(--muted);
-      margin-bottom:32px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .modal-body{
-      padding:0 40px 40px;
-    }
-
-    .modal-section{
-      margin-bottom:32px;
-    }
-
-    .modal-section-title{
-      font-size:20px;
-      font-weight:700;
-      color:var(--navy);
-      margin-bottom:16px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .modal-section-icon{
-      font-size:24px;
-    }
-
-    .modal-description{
-      color:var(--muted);
-      line-height:1.8;
-      font-size:15px;
-    }
-
-    .quick-info-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:16px;
-      margin-bottom:32px;
-    }
-
-    .quick-info-card{
-      background:var(--bg);
-      padding:20px;
-      border-radius:12px;
-      border-left:4px solid var(--orange);
-    }
-
-    .quick-info-label{
-      font-size:12px;
-      font-weight:600;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      margin-bottom:8px;
-    }
-
-    .quick-info-value{
-      font-size:16px;
-      color:var(--navy);
-      font-weight:600;
-    }
-
-    .speaker-card{
-      background:var(--bg);
-      padding:24px;
-      border-radius:12px;
-      display:flex;
-      gap:24px;
-      align-items:start;
-    }
-
-    .speaker-photo{
-      width:100px;
-      height:100px;
-      border-radius:12px;
-      background:linear-gradient(135deg,var(--navy),var(--purple));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-size:40px;
-      font-weight:700;
-      flex-shrink:0;
-    }
-
-    .speaker-info{
-      flex:1;
-    }
-
-    .speaker-name{
-      font-size:20px;
-      font-weight:700;
-      color:var(--navy);
-      margin-bottom:4px;
-    }
-
-    .speaker-title{
-      font-size:14px;
-      color:var(--orange);
-      font-weight:600;
-      margin-bottom:12px;
-    }
-
-    .speaker-bio{
-      color:var(--muted);
-      line-height:1.6;
-      font-size:14px;
-    }
-
-    .agenda-list{
-      list-style:none;
-      padding:0;
-      margin:0;
-    }
-
-    .agenda-item{
-      background:var(--bg);
-      padding:20px;
-      border-radius:12px;
-      margin-bottom:12px;
-      display:flex;
-      gap:20px;
-    }
-
-    .agenda-time{
-      font-weight:700;
-      color:var(--orange);
-      font-size:15px;
-      min-width:80px;
-    }
-
-    .agenda-content{
-      flex:1;
-    }
-
-    .agenda-title{
-      font-weight:600;
-      color:var(--navy);
-      margin-bottom:4px;
-      font-size:15px;
-    }
-
-    .agenda-description{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .prerequisites-list{
-      list-style:none;
-      padding:0;
-      margin:0;
-    }
-
-    .prerequisite-item{
-      padding:12px 16px;
-      background:var(--bg);
-      border-radius:8px;
-      margin-bottom:8px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    .prerequisite-item::before{
-      content:'✓';
-      color:var(--orange);
-      font-weight:700;
-      font-size:18px;
-    }
+    .quick-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px;}
+    .quick-info-card{background: #fafafa;padding:20px;border-radius:12px;border-left:4px solid var(--orange);}
+    .quick-info-label{font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; margin-bottom:4px;}
+    .quick-info-value{font-size:15px; color:var(--navy); font-weight:600;}
 
     .contact-card{
-      background:linear-gradient(135deg,rgba(46,42,143,0.1),rgba(244,162,56,0.05));
+      background:linear-gradient(135deg,rgba(46,42,143,0.05),rgba(244,162,56,0.05));
       padding:24px;
       border-radius:12px;
-      border:2px solid var(--border);
+      border:1px solid rgba(46,42,143,0.1);
     }
-
-    .contact-person{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      margin-bottom:16px;
-    }
-
+    .contact-person{display:flex; align-items:center; gap:16px; margin-bottom:16px;}
     .contact-avatar{
-      width:60px;
-      height:60px;
-      border-radius:50%;
-      background:linear-gradient(135deg,var(--orange),#F59A4C);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-size:24px;
-      font-weight:700;
+      width:50px; height:50px; border-radius:50%;
+      background:linear-gradient(135deg,var(--navy),var(--purple));
+      display:flex; align-items:center; justify-content:center;
+      color:white; font-size:20px; font-weight:700;
     }
-
-    .contact-details{
-      flex:1;
-    }
-
-    .contact-name{
-      font-size:18px;
-      font-weight:700;
-      color:var(--navy);
-      margin-bottom:4px;
-    }
-
-    .contact-role{
-      font-size:13px;
-      color:var(--muted);
-      font-weight:500;
-    }
-
-    .contact-info{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .contact-info-item{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      font-size:14px;
-      color:var(--navy);
-    }
-
-    .contact-info-item span{
-      font-weight:600;
-    }
-
-    .contact-icon{
-      font-size:18px;
-      color:var(--orange);
-    }
-
-    /* FOOTER */
-    footer{
-      background:#111;
-      color:#bbb;
-      padding:40px 20px;
-      text-align:center;
-      font-size:14px;
-      margin-top:80px;
-    }
+    .contact-name{font-size:16px; font-weight:700; color:var(--navy);}
+    .contact-role{font-size:13px; color:var(--orange); font-weight:600;}
 
     @media(max-width:1024px){
       .calendar-wrapper{grid-template-columns:1fr;gap:24px}
       .event-details-sidebar{position:static;top:auto}
-      .quick-info-grid{grid-template-columns:1fr}
-    }
-
-    @media(max-width:768px){
-      .calendar{padding:20px}
-      .calendar-title{font-size:20px}
-      .weekday{font-size:12px}
-      .day{font-size:13px}
-      .event-details-sidebar{padding:24px}
-      .event-title{font-size:24px}
-      .calendar-nav{font-size:20px;padding:6px 12px}
-      .modal-header{padding:30px 20px 0}
-      .modal-body{padding:0 20px 30px}
-      .modal-event-title{font-size:28px}
-      .speaker-card{flex-direction:column;text-align:center}
-      .speaker-photo{margin:0 auto}
-      .agenda-item{flex-direction:column;gap:8px}
-      .agenda-time{min-width:auto}
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand">IIC</div>
-    <nav>
-      <a href="home.html">Home</a>
-      <a href="events.html">Events</a>
-      <a href="calendar.html">Calendar</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="teams.html">Teams</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <div class="hero-calendar">
-      <h1>Event Calendar</h1>
-      <p>Track all IIC events, workshops, bootcamps, and community gatherings. Plan your participation in upcoming innovation initiatives.</p>
-    </div>
-
-    <div class="calendar-wrapper">
-      <div class="calendar">
-        <div class="calendar-header">
-          <button class="calendar-nav" onclick="previousMonth()">&lt;</button>
-          <div class="calendar-title" id="monthYear"></div>
-          <button class="calendar-nav" onclick="nextMonth()">&gt;</button>
+  <div class="wrap">
+    <header>
+      <div class="header-inner">
+        <div class="brand">
+          <img src="images/vvit.png" alt="VVIT Logo" />
+          <span>VVIT</span>
         </div>
+        <nav>
+          <a href="home.html">Home</a>
+          <a href="events.html">Events</a>
+          <a href="calendar.html">Calendar</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="teams.html">Teams</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
 
-        <div class="weekdays">
-          <div class="weekday">Sun</div>
-          <div class="weekday">Mon</div>
-          <div class="weekday">Tue</div>
-          <div class="weekday">Wed</div>
-          <div class="weekday">Thu</div>
-          <div class="weekday">Fri</div>
-          <div class="weekday">Sat</div>
-        </div>
-
-        <div class="days" id="calendarDays"></div>
+    <main>
+      <div class="hero-calendar">
+        <h1>Event Calendar</h1>
+        <p>Track all IIC events, workshops, bootcamps, and community gatherings. Plan your participation in upcoming innovation initiatives.</p>
       </div>
 
-      <div class="event-details-sidebar" id="eventDetailsSidebar">
-        <div class="no-event-selected">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-          </svg>
-          <p>Click on a highlighted date to view event details</p>
+      <div class="calendar-wrapper">
+        <div class="calendar glass-card">
+          <div class="calendar-header">
+            <button class="calendar-nav" onclick="previousMonth()">&lt;</button>
+            <div class="calendar-title" id="monthYear"></div>
+            <button class="calendar-nav" onclick="nextMonth()">&gt;</button>
+          </div>
+
+          <div class="weekdays">
+            <div class="weekday">Sun</div>
+            <div class="weekday">Mon</div>
+            <div class="weekday">Tue</div>
+            <div class="weekday">Wed</div>
+            <div class="weekday">Thu</div>
+            <div class="weekday">Fri</div>
+            <div class="weekday">Sat</div>
+          </div>
+
+          <div class="days" id="calendarDays"></div>
+        </div>
+
+        <div class="event-details-sidebar glass-card" id="eventDetailsSidebar">
+          <div class="no-event-selected">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <p>Click on a highlighted date to view event details</p>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- MODAL -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
-    <div class="modal-content" id="modalContent">
-      <!-- Modal content will be inserted here -->
-    </div>
+    <footer style="background:#111; color:#fff; padding:60px 0 0 0; margin-top:0;">
+      <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px 24px;">
+          <div>
+            <h4 style="font-size:20px;font-weight:700;margin-bottom:16px;">VVIT IIC</h4>
+            <p style="color:#bbb;line-height:1.7;font-size:15px;">Institution's Innovation Council (IIC) promotes innovation and entrepreneurship within academic institutions.</p>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">Quick Links</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Home</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Events</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">About Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">Resources</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">YUKTI</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">MIC</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">AICTE</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">Contact</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#contact" style="color:#bbb;display:block;padding:4px 0;">Contact Us</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Team</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr style="border:0;border-top:1px solid #222;margin:40px 0 24px 0">
+        <p style="color:#888;font-size:14px;margin:32px 0 0 0;">&copy; <span id="year"></span> Institution's Innovation Council. All rights reserved.</p>
+      </div>
+    </footer>
   </div>
 
-  <footer>
-    <p>&copy; <span id="year"></span> Institution's Innovation Council. All rights reserved.</p>
-  </footer>
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
 
   <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  let currentDate = new Date(2023, 8, 1);
+  // Initialize Calendar to December 2025 to show new events
+  let currentDate = new Date(2025, 11, 1); 
   let selectedDate = null;
 
-  // Enhanced Event Data with detailed information
+  // New Contact Person Info
+  const newEventContact = {
+    name: 'Harsha Vardhan',
+    role: 'Events Team',
+    phone: '9177818027',
+    email: 'jvharsha.s@gmail.com',
+    initial: 'HV'
+  };
+
+  // Helper to check status
+  function getEventStatus(dateStr) {
+    const eventDate = new Date(dateStr);
+    const today = new Date();
+    // Normalize to compare dates only
+    eventDate.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+    return eventDate < today ? 'Completed' : 'Upcoming';
+  }
+
   const events = {
-    '2023-01-15': {
+    // --- Past Events (2023) ---
+    '2025-01-15': {
       title: 'New Year Innovation Meet',
       type: 'Meeting',
       time: '10:00 AM',
       location: 'Conference Room',
-      description: 'Kickstart the year with innovative ideas and collaborative discussions about upcoming projects.',
-      fullDescription: 'Join us for our annual New Year Innovation Meet where we bring together innovative minds to discuss breakthrough ideas and collaborative opportunities. This meeting will set the tone for the year ahead with strategic planning sessions and brainstorming workshops.',
-      speaker: {
-        name: 'Dr. Rajesh Kumar',
-        title: 'Director of Innovation',
-        bio: 'Dr. Kumar has over 15 years of experience in leading innovation initiatives across multiple industries. He specializes in design thinking and collaborative innovation methodologies.',
-        initial: 'RK'
-      },
-      agenda: [
-        { time: '10:00 AM', title: 'Welcome & Introduction', description: 'Opening remarks and overview of the year ahead' },
-        { time: '10:30 AM', title: 'Innovation Trends 2023', description: 'Key trends and opportunities in the innovation landscape' },
-        { time: '11:30 AM', title: 'Brainstorming Session', description: 'Interactive session to generate project ideas' },
-        { time: '12:30 PM', title: 'Next Steps & Closing', description: 'Action items and concluding remarks' }
-      ],
-      prerequisites: [
-        'Basic understanding of innovation concepts',
-        'Notebook and pen for brainstorming',
-        'Prior registration required'
-      ],
-      contact: {
-        name: 'Harsha',
-        role: 'Event Coordinator',
-        phone: '9177889900',
-        email: 'harsha@iic.edu',
-        initial: 'H'
-      }
+      description: 'Kickstart the year with innovative ideas.',
+      fullDescription: 'Annual innovation meet to discuss breakthrough ideas and opportunities.',
+      contact: {         name: 'Harsha Vardhan',
+        role: 'iic team vvitu',
+        phone: '9177818027',
+        email: 'jvharsha.s@gmail.com',
+        initial: 'HV'}
     },
-    '2023-02-20': {
+    '2025-02-20': {
       title: 'Design Thinking Workshop',
       type: 'Workshop',
-      time: '2:00 PM',
+      time: '02:00 PM',
       location: 'Innovation Lab',
-      description: 'Learn design thinking methodologies to solve complex problems with creative solutions.',
-      fullDescription: 'Immerse yourself in the world of design thinking through this hands-on workshop. Learn the five-stage process of empathize, define, ideate, prototype, and test. Work on real-world challenges and develop innovative solutions using human-centered design principles.',
-      speaker: {
-        name: 'Prof. Anjali Mehta',
-        title: 'Design Thinking Expert',
-        bio: 'Prof. Mehta is a renowned design thinking practitioner with expertise in human-centered design. She has trained over 5000 students and professionals in creative problem-solving methodologies.',
-        initial: 'AM'
-      },
-      agenda: [
-        { time: '2:00 PM', title: 'Introduction to Design Thinking', description: 'Understanding the philosophy and framework' },
-        { time: '2:45 PM', title: 'Empathize & Define', description: 'User research and problem framing exercises' },
-        { time: '3:45 PM', title: 'Ideate & Prototype', description: 'Brainstorming and rapid prototyping session' },
-        { time: '4:45 PM', title: 'Test & Iterate', description: 'User testing and feedback implementation' },
-        { time: '5:30 PM', title: 'Showcase & Wrap-up', description: 'Team presentations and closing remarks' }
-      ],
-      prerequisites: [
-        'Open mindset and creative thinking',
-        'Willingness to collaborate in teams',
-        'No prior experience necessary',
-        'Bring sketching materials if available'
-      ],
-      contact: {
-        name: 'Priya Sharma',
-        role: 'Workshop Coordinator',
-        phone: '9876543210',
-        email: 'priya@iic.edu',
-        initial: 'PS'
-      }
+      description: 'Learn design thinking methodologies to solve complex problems.',
+      fullDescription: 'Immerse yourself in the world of design thinking through this hands-on workshop. Learn the five-stage process of empathize, define, ideate, prototype, and test.',
+      contact: {         name: 'Harsha Vardhan',
+        role: 'iic team vvitu',
+        phone: '9177818027',
+        email: 'jvharsha.s@gmail.com',
+        initial: 'HV' }
     },
-    '2023-03-10': {
+    '2025-03-10': {
       title: 'Patent Filing Seminar',
       type: 'Seminar',
       time: '11:00 AM',
       location: 'Auditorium',
-      description: 'Understand the process of filing patents and protecting your innovative ideas and inventions.',
-      fullDescription: 'A comprehensive seminar on intellectual property rights and patent filing procedures. Learn how to protect your innovations, understand the patent application process, and navigate the legal landscape of IP protection. Industry experts will share insights on successful patent strategies.',
-      speaker: {
-        name: 'Adv. Vikram Patel',
-        title: 'IP Attorney & Patent Consultant',
-        bio: 'Adv. Patel is a leading IP attorney with 20 years of experience in patent law. He has successfully filed over 500 patents and provides strategic IP consultation to startups and research institutions.',
-        initial: 'VP'
-      },
-      agenda: [
-        { time: '11:00 AM', title: 'IP Basics', description: 'Introduction to intellectual property and its types' },
-        { time: '11:45 AM', title: 'Patent Process', description: 'Step-by-step guide to filing a patent application' },
-        { time: '12:30 PM', title: 'Case Studies', description: 'Real-world examples of successful patent strategies' },
-        { time: '1:15 PM', title: 'Q&A Session', description: 'Interactive discussion and doubt clarification' }
-      ],
-      prerequisites: [
-        'Have an innovation or invention idea',
-        'Basic understanding of legal concepts helpful but not required',
-        'Bring your project documentation if available'
-      ],
-      contact: {
-        name: 'Harsha',
-        role: 'Legal Affairs Coordinator',
-        phone: '9177889900',
-        email: 'harsha@iic.edu',
-        initial: 'H'
-      }
+      description: 'Understand the process of filing patents and protecting innovative ideas.',
+      fullDescription: 'A comprehensive seminar on intellectual property rights and patent filing procedures. Learn how to protect your innovations and navigate the legal landscape.',
+      contact: { name: 'Harsha Vardhan', role: 'Events Team', phone: '9177889900', email: 'jvharsha.s@gmail.com', initial: 'H' }
     },
-    '2023-04-25': {
+    '2025-04-25': {
       title: 'Startup Pitch Competition',
       type: 'Competition',
-      time: '9:00 AM',
+      time: '09:00 AM',
       location: 'Main Hall',
-      description: 'Present your startup ideas to investors and industry experts for feedback and funding opportunities.',
-      fullDescription: 'The ultimate platform for aspiring entrepreneurs to showcase their startup ideas. Present your business plan to a panel of investors, angel investors, and industry veterans. Top performers will receive seed funding, mentorship opportunities, and incubation support.',
-      speaker: {
-        name: 'Mr. Suresh Reddy',
-        title: 'Venture Capitalist & Angel Investor',
-        bio: 'Mr. Reddy has invested in over 50 startups and has a track record of identifying high-potential ventures. He brings 25 years of entrepreneurial experience and strategic business insights.',
-        initial: 'SR'
-      },
-      agenda: [
-        { time: '9:00 AM', title: 'Registration & Networking', description: 'Check-in and meet fellow participants' },
-        { time: '9:45 AM', title: 'Opening Ceremony', description: 'Welcome address and competition guidelines' },
-        { time: '10:15 AM', title: 'Pitch Round 1', description: 'First set of startup presentations' },
-        { time: '12:00 PM', title: 'Lunch Break', description: 'Networking lunch with mentors and investors' },
-        { time: '1:30 PM', title: 'Pitch Round 2', description: 'Second set of startup presentations' },
-        { time: '3:30 PM', title: 'Final Pitches', description: 'Top 5 finalists present extended pitches' },
-        { time: '5:00 PM', title: 'Awards Ceremony', description: 'Winner announcement and prize distribution' }
-      ],
-      prerequisites: [
-        'Completed pitch deck (10-15 slides)',
-        'Business plan document',
-        'Financial projections for 3 years',
-        'Team registration (max 4 members)'
-      ],
-      contact: {
-        name: 'Kiran Kumar',
-        role: 'Startup Program Manager',
-        phone: '9123456789',
-        email: 'kiran@iic.edu',
-        initial: 'KK'
-      }
+      description: 'Present startup ideas to investors and industry experts.',
+      fullDescription: 'The ultimate platform for aspiring entrepreneurs. Present your business plan to a panel of investors. Top performers receive seed funding and incubation support.',
+      contact: { name: 'Kiran Kumar', role: 'Startup Manager', phone: '9123456789', email: 'kiran@iic.edu', initial: 'KK' }
     },
-    '2023-05-18': {
+    '2025-05-18': {
       title: 'Tech Innovation Summit',
       type: 'Summit',
       time: '10:30 AM',
       location: 'Convention Center',
-      description: 'Annual summit featuring keynote speakers, panel discussions, and networking with tech innovators.',
-      fullDescription: 'The most anticipated tech event of the year! Join industry leaders, innovators, and technology enthusiasts for a full-day summit exploring cutting-edge technologies, emerging trends, and the future of innovation. Network with top executives, attend masterclasses, and gain insights from pioneering tech companies.',
-      speaker: {
-        name: 'Dr. Sanjay Gupta',
-        title: 'Chief Technology Officer, TechCorp',
-        bio: 'Dr. Gupta is a visionary tech leader with expertise in AI, blockchain, and IoT. He has led digital transformation initiatives for Fortune 500 companies and holds 15 patents in emerging technologies.',
-        initial: 'SG'
-      },
-      agenda: [
-        { time: '10:30 AM', title: 'Inaugural Address', description: 'Opening keynote on tech innovation landscape' },
-        { time: '11:30 AM', title: 'AI & Machine Learning', description: 'Panel discussion on AI applications' },
-        { time: '1:00 PM', title: 'Networking Lunch', description: 'Connect with industry leaders' },
-        { time: '2:30 PM', title: 'Blockchain & Web3', description: 'Future of decentralized technologies' },
-        { time: '4:00 PM', title: 'Startup Showcase', description: 'Innovative tech startups demo their products' },
-        { time: '5:30 PM', title: 'Closing Note', description: 'Summary and future directions' }
-      ],
-      prerequisites: [
-        'Summit registration and badge pickup',
-        'Business cards for networking',
-        'Laptop for hands-on sessions (optional)',
-        'Professional attire recommended'
-      ],
-      contact: {
-        name: 'Harsha',
-        role: 'Summit Coordinator',
-        phone: '9177889900',
-        email: 'harsha@iic.edu',
-        initial: 'H'
-      }
+      description: 'Annual summit featuring keynote speakers and panel discussions.',
+      fullDescription: 'Join industry leaders and technology enthusiasts for a full-day summit exploring cutting-edge technologies and the future of innovation.',
+      contact: { name: 'Harsha', role: 'Summit Coordinator', phone: '9177889900', email: 'harsha@iic.edu', initial: 'H' }
     },
-    '2023-06-12': {
+    '2025-06-12': {
       title: 'AI & ML Bootcamp',
       type: 'Bootcamp',
-      time: '9:00 AM',
+      time: '09:00 AM',
       location: 'Computer Lab',
-      description: 'Intensive bootcamp covering artificial intelligence and machine learning fundamentals and applications.',
-      fullDescription: 'A comprehensive 3-day bootcamp designed to take you from basics to building real-world AI models. Learn Python programming, data preprocessing, machine learning algorithms, deep learning with neural networks, and deploy your own AI applications. Hands-on projects and industry case studies included.',
-      speaker: {
-        name: 'Prof. Anil Kapoor',
-        title: 'AI Research Scientist',
-        bio: 'Prof. Kapoor is an AI researcher specializing in deep learning and computer vision. He has published 40+ research papers and has trained thousands of students in AI technologies.',
-        initial: 'AK'
-      },
-      agenda: [
-        { time: '9:00 AM', title: 'Python & Data Science Basics', description: 'Programming fundamentals for ML' },
-        { time: '11:00 AM', title: 'Machine Learning Algorithms', description: 'Supervised and unsupervised learning' },
-        { time: '2:00 PM', title: 'Deep Learning Fundamentals', description: 'Neural networks and frameworks' },
-        { time: '4:00 PM', title: 'Hands-on Project', description: 'Build and train your first AI model' },
-        { time: '5:30 PM', title: 'Day 1 Recap', description: 'Review and assignment distribution' }
-      ],
-      prerequisites: [
-        'Laptop with Python installed (Anaconda recommended)',
-        'Basic programming knowledge helpful',
-        'Mathematics background (linear algebra, calculus)',
-        'Commitment to attend all 3 days'
-      ],
-      contact: {
-        name: 'Deepa Singh',
-        role: 'Technical Bootcamp Lead',
-        phone: '9988776655',
-        email: 'deepa@iic.edu',
-        initial: 'DS'
-      }
+      description: 'Intensive bootcamp covering AI and ML fundamentals.',
+      fullDescription: 'A comprehensive 3-day bootcamp designed to take you from basics to building real-world AI models. Learn Python, data preprocessing, and deep learning.',
+      contact: { name: 'Deepa Singh', role: 'Tech Lead', phone: '9988776655', email: 'deepa@iic.edu', initial: 'DS' }
     },
-    '2023-07-08': {
+    '2025-07-08': {
       title: 'Industry Connect Program',
       type: 'Program',
-      time: '3:00 PM',
+      time: '03:00 PM',
       location: 'Seminar Hall',
-      description: 'Connect with industry professionals and explore internship and collaboration opportunities.',
-      fullDescription: 'Bridge the gap between academia and industry! Meet hiring managers, senior professionals, and HR representatives from leading companies. Learn about career paths, internship opportunities, industry expectations, and how to prepare for a successful professional career. One-on-one mentoring sessions available.',
-      speaker: {
-        name: 'Ms. Priya Nair',
-        title: 'HR Director, InnovateTech Solutions',
-        bio: 'Ms. Nair leads talent acquisition for a leading tech company with 10+ years in HR and career development. She has mentored hundreds of students in career planning and professional growth.',
-        initial: 'PN'
-      },
-      agenda: [
-        { time: '3:00 PM', title: 'Industry Overview', description: 'Current job market and skill requirements' },
-        { time: '3:45 PM', title: 'Company Presentations', description: 'Leading companies share opportunities' },
-        { time: '4:45 PM', title: 'Resume & Interview Tips', description: 'How to stand out in applications' },
-        { time: '5:30 PM', title: 'Networking Session', description: 'Direct interaction with industry professionals' },
-        { time: '6:30 PM', title: 'One-on-One Mentoring', description: 'Personal career guidance (sign-up required)' }
-      ],
-      prerequisites: [
-        'Updated resume (5 copies printed)',
-        'Professional attire required',
-        'LinkedIn profile (recommended)',
-        'Portfolio or project documentation'
-      ],
-      contact: {
-        name: 'Harsha',
-        role: 'Industry Relations Manager',
-        phone: '9177889900',
-        email: 'harsha@iic.edu',
-        initial: 'H'
-      }
+      description: 'Connect with industry professionals and explore opportunities.',
+      fullDescription: 'Meet hiring managers and HR representatives from leading companies. Learn about career paths, internship opportunities, and industry expectations.',
+      contact: { name: 'Harsha', role: 'Industry Relations', phone: '9177889900', email: 'harsha@iic.edu', initial: 'H' }
     },
-    '2023-08-22': {
+    '2025-08-22': {
       title: 'Research Paper Presentation',
       type: 'Presentation',
-      time: '1:00 PM',
+      time: '01:00 PM',
       location: 'Research Center',
-      description: 'Platform for students to present their research findings and innovations to academic community.',
-      fullDescription: 'Showcase your research work to faculty members, peers, and visiting scholars. Present your findings, methodologies, and conclusions in a professional academic setting. Receive constructive feedback and explore publication opportunities in reputed journals and conferences.',
-      speaker: {
-        name: 'Dr. Ramesh Iyer',
-        title: 'Head of Research & Publications',
-        bio: 'Dr. Iyer has supervised over 100 research projects and published 80+ papers in international journals. He provides guidance on research methodology and academic writing.',
-        initial: 'RI'
-      },
-      agenda: [
-        { time: '1:00 PM', title: 'Welcome & Guidelines', description: 'Presentation format and evaluation criteria' },
-        { time: '1:30 PM', title: 'Session 1: Engineering', description: 'Technical research presentations' },
-        { time: '3:00 PM', title: 'Session 2: Applied Sciences', description: 'Interdisciplinary research presentations' },
-        { time: '4:30 PM', title: 'Poster Session', description: 'Interactive poster presentations' },
-        { time: '5:30 PM', title: 'Feedback & Awards', description: 'Judges feedback and best paper awards' }
-      ],
-      prerequisites: [
-        'Completed research paper (IEEE format)',
-        'PowerPoint presentation (15 minutes max)',
-        'Research data and supporting documents',
-        'Prior abstract submission required'
-      ],
-      contact: {
-        name: 'Dr. Lakshmi Reddy',
-        role: 'Research Coordinator',
-        phone: '9876512345',
-        email: 'lakshmi@iic.edu',
-        initial: 'LR'
-      }
+      description: 'Students present research findings to the academic community.',
+      fullDescription: 'Showcase your research work to faculty and peers. Present findings, methodologies, and conclusions in a professional academic setting.',
+      contact: { name: 'Dr. Lakshmi Reddy', role: 'Research Coordinator', phone: '9876512345', email: 'lakshmi@iic.edu', initial: 'LR' }
     },
-    '2023-09-23': {
+    '2025-09-23': {
       title: 'Smart India Hackathon (SIH)',
       type: 'Hackathon',
-      time: '9:00 AM',
+      time: '09:00 AM',
       location: 'New Block Seminar Hall',
-      description: 'National-level hackathon fostering innovation among students to solve real-world problems.',
-      fullDescription: 'Join India\'s biggest hackathon! Work in teams to solve problem statements from government ministries and industry partners. 36-hour coding marathon with mentorship, unlimited food, and exciting prizes. Top solutions will be implemented at national level. This is your chance to make a real impact!',
-      speaker: {
-        name: 'Mr. Arjun Malhotra',
-        title: 'SIH National Coordinator',
-        bio: 'Mr. Malhotra has coordinated 5 editions of Smart India Hackathon with participation from 50,000+ students. He mentors teams in problem-solving and rapid prototyping.',
-        initial: 'AM'
-      },
-      agenda: [
-        { time: '9:00 AM', title: 'Registration & Team Check-in', description: 'Verification and setup' },
-        { time: '10:00 AM', title: 'Inauguration Ceremony', description: 'Problem statement release' },
-        { time: '11:00 AM', title: 'Hacking Begins!', description: '36-hour continuous coding marathon' },
-        { time: '12:00 PM (Day 2)', title: 'Mid-evaluation', description: 'Progress review by mentors' },
-        { time: '11:00 PM (Day 2)', title: 'Submission Deadline', description: 'Final project submission' },
-        { time: '9:00 AM (Day 3)', title: 'Final Presentations', description: 'Demo to jury panel' },
-        { time: '2:00 PM (Day 3)', title: 'Results & Awards', description: 'Winner announcement' }
-      ],
-      prerequisites: [
-        'Team of 6 members (pre-registered)',
-        'Laptops and development tools',
-        'Valid college ID cards',
-        'Sleeping bags (for 36-hour event)',
-        'Power banks and chargers'
-      ],
-      contact: {
-        name: 'Harsha',
-        role: 'SIH Campus Coordinator',
-        phone: '9177889900',
-        email: 'harsha@iic.edu',
-        initial: 'H'
-      }
+      description: 'National-level hackathon solving real-world problems.',
+      fullDescription: 'Join India\'s biggest hackathon! Work in teams to solve problem statements from government ministries. 36-hour coding marathon with mentorship.',
+      contact: { name: 'Harsha', role: 'SIH Coordinator', phone: '9177889900', email: 'harsha@iic.edu', initial: 'H' }
     },
-    '2023-10-15': {
+    '2025-10-15': {
       title: 'Innovation Day Celebration',
       type: 'Celebration',
       time: '10:00 AM',
       location: 'IIC Hall',
-      description: 'Celebration of innovation with inspiring talks, awards ceremony, and project showcases from talented students.',
-      fullDescription: 'Our annual celebration of innovation and creativity! Experience inspiring keynote speeches, witness groundbreaking student projects, and celebrate the achievements of our innovation community. Awards for Best Innovator, Best Project, and Outstanding Contribution. Fun activities, live demonstrations, and celebration lunch included!',
-      speaker: {
-        name: 'Dr. Meera Krishnan',
-        title: 'Chief Guest - Renowned Innovator',
-        bio: 'Dr. Krishnan is a celebrated innovator and entrepreneur with 30+ patents to her name. She founded three successful tech startups and is passionate about inspiring young innovators.',
-        initial: 'MK'
-      },
-      agenda: [
-        { time: '10:00 AM', title: 'Welcome & Lamp Lighting', description: 'Traditional inauguration ceremony' },
-        { time: '10:30 AM', title: 'Keynote Address', description: 'Inspiring talk by chief guest' },
-        { time: '11:30 AM', title: 'Project Exhibition', description: 'Student innovation showcase' },
-        { time: '1:00 PM', title: 'Celebration Lunch', description: 'Networking and refreshments' },
-        { time: '2:30 PM', title: 'Innovation Awards', description: 'Recognition of outstanding innovators' },
-        { time: '4:00 PM', title: 'Cultural Performances', description: 'Entertainment and fun activities' },
-        { time: '5:00 PM', title: 'Vote of Thanks', description: 'Closing remarks' }
-      ],
-      prerequisites: [
-        'No registration required - Open to all',
-        'Project teams should set up exhibition by 9:00 AM',
-        'Dress code: Smart casual or traditional',
-        'RSVP for lunch (limited seats)'
-      ],
-      contact: {
-        name: 'Neha Patel',
-        role: 'Events Head',
-        phone: '9865432100',
-        email: 'neha@iic.edu',
-        initial: 'NP'
-      }
+      description: 'Celebration with inspiring talks and awards.',
+      fullDescription: 'Experience inspiring keynote speeches and celebrate the achievements of our innovation community. Awards for Best Innovator and Best Project.',
+      contact: { name: 'Neha Patel', role: 'Events Head', phone: '9865432100', email: 'neha@iic.edu', initial: 'NP' }
     },
-    '2023-11-15': {
+    '2025-11-15': {
       title: 'Workshop on Entrepreneurship',
       type: 'Workshop',
       time: '11:00 AM',
       location: 'Seminar Hall',
-      description: 'Interactive workshop guiding students on startup ideas, business models, and entrepreneurial mindset.',
-      fullDescription: 'Transform your idea into a successful business! This hands-on workshop covers essential entrepreneurship skills including idea validation, market research, business model canvas, funding strategies, and scaling your startup. Learn from successful entrepreneurs who have built thriving businesses from scratch.',
-      speaker: {
-        name: 'Mr. Rohit Sharma',
-        title: 'Serial Entrepreneur & Startup Mentor',
-        bio: 'Mr. Sharma has founded 4 successful startups with 2 exits. He mentors early-stage founders and teaches entrepreneurship at leading business schools. His expertise spans technology, finance, and scaling businesses.',
-        initial: 'RS'
-      },
-      agenda: [
-        { time: '11:00 AM', title: 'Entrepreneurial Mindset', description: 'Thinking like an entrepreneur' },
-        { time: '12:00 PM', title: 'Idea to Business Model', description: 'Validating and structuring your idea' },
-        { time: '1:30 PM', title: 'Lunch Break', description: 'Networking with fellow entrepreneurs' },
-        { time: '2:30 PM', title: 'Funding & Finance', description: 'Bootstrapping vs. investor funding' },
-        { time: '4:00 PM', title: 'Practical Exercise', description: 'Build your business model canvas' },
-        { time: '5:00 PM', title: 'Pitch Practice', description: 'Present your business idea' }
-      ],
-      prerequisites: [
-        'Startup idea (even if rough)',
-        'Notebook for business planning',
-        'Open mind and willingness to learn',
-        'Team formation encouraged but not mandatory'
-      ],
-      contact: {
-        name: 'Harsha',
-        role: 'Entrepreneurship Cell Coordinator',
-        phone: '9177889900',
-        email: 'harsha@iic.edu',
-        initial: 'H'
-      }
+      description: 'Workshop on startup ideas and business models.',
+      fullDescription: 'Transform your idea into a successful business! This workshop covers idea validation, business model canvas, and funding strategies.',
+      contact: { name: 'Harsha', role: 'E-Cell Coordinator', phone: '9177889900', email: 'harsha@iic.edu', initial: 'H' }
     },
-    '2023-12-10': {
+    '2025-12-19': {
       title: 'Incubation Center Visit',
       type: 'Visit',
       time: '10:30 AM',
-      location: 'TBI Incubation Center',
-      description: 'Educational visit to explore incubation facilities and learn from experienced startup mentors.',
-      fullDescription: 'Get an exclusive behind-the-scenes look at a working incubation center! Tour state-of-the-art facilities, meet startup founders working on innovative products, understand the incubation process, and learn about resources available for early-stage startups. Q&A session with successful incubated entrepreneurs.',
-      speaker: {
-        name: 'Dr. Kavita Desai',
-        title: 'Director, TBI Incubation Center',
-        bio: 'Dr. Desai leads one of the most successful incubation centers with 50+ incubated startups. She has facilitated funding of ₹100+ crores for startups and provides strategic guidance to entrepreneurs.',
-        initial: 'KD'
-      },
-      agenda: [
-        { time: '10:30 AM', title: 'Welcome & Orientation', description: 'Introduction to incubation ecosystem' },
-        { time: '11:00 AM', title: 'Facility Tour', description: 'Walk through incubation spaces and labs' },
-        { time: '12:00 PM', title: 'Meet the Startups', description: 'Interact with incubated companies' },
-        { time: '1:00 PM', title: 'Lunch with Founders', description: 'Casual networking over lunch' },
-        { time: '2:00 PM', title: 'Incubation Process', description: 'How to apply and get selected' },
-        { time: '3:00 PM', title: 'Success Stories', description: 'Alumni entrepreneurs share journeys' },
-        { time: '4:00 PM', title: 'Q&A & Wrap-up', description: 'Open discussion and closing' }
-      ],
-      prerequisites: [
-        'Transportation will be provided from campus',
-        'College ID card mandatory',
-        'Questions prepared for founders',
-        'Camera allowed for documentation',
-        'Registration required (limited seats: 30)'
-      ],
-      contact: {
-        name: 'Rahul Verma',
-        role: 'Incubation Program Coordinator',
-        phone: '9123498765',
-        email: 'rahul@iic.edu',
-        initial: 'RV'
-      }
+      location: 'SRM-AP Incubation Center',
+      description: 'Educational visit to explore incubation facilities.',
+      fullDescription: 'Get an exclusive behind-the-scenes look at a working incubation center! Tour state-of-the-art facilities, meet startup founders, and learn about resources available for early-stage startups.',
+      contact: { name: 'Harsha Vardhan', role: 'iic team vvitu', phone: '9177818027', email: 'jvharsha.s@gmail.com', initial: 'HV' }
+    },
+
+    // --- NEW Q2 EVENTS (Dec 2025 - Feb 2026) ---
+    '2025-12-05': {
+      title: 'Design Thinking & Innovation Design Workshop',
+      type: 'Workshop',
+      time: '09:30 AM',
+      location: 'Innovation Hall',
+      description: 'Validation of ideas using Design Thinking and Critical Thinking frameworks.',
+      fullDescription: 'A comprehensive workshop focused on Design Thinking, Critical Thinking, and Innovation Design. The goal is to validate at least 10 ideas and advance 5 to TRL 1-4. Teams will be shortlisted and data uploaded to the YUKTI Innovation Repository.',
+      contact: newEventContact
+    },
+    '2025-12-15': {
+      title: 'Innovation & Entrepreneurship Outreach Program',
+      type: 'Outreach',
+      time: '10:00 AM',
+      location: 'Local Schools / Community Center',
+      description: 'Outreach program in schools to foster innovation among students.',
+      fullDescription: 'An offline outreach program aiming to reach over 100 external students across at least 2 programs. The focus is on spreading awareness about Innovation and Entrepreneurship at the school level.',
+      contact: newEventContact
+    },
+    '2025-12-28': {
+      title: 'AI & Innovation Sprints',
+      type: 'Sprint',
+      time: '09:00 AM',
+      location: 'Computer Lab 3',
+      description: 'Rapid Prototyping for Digital Transformation.',
+      fullDescription: 'An intense session of AI/Innovation Sprints focusing on Rapid Prototyping for Digital Transformation. Targets include developing at least 5 digital prototypes and organizing 3 sprint events. Outcomes to be deposited in YUKTI.',
+      contact: newEventContact
+    },
+    '2026-01-10': {
+      title: 'Expert Talk on TRL, MRL & IP Commercialization',
+      type: 'Seminar',
+      time: '11:00 AM',
+      location: 'Main Auditorium',
+      description: 'Expert session on Technology Readiness Levels and Tech Transfer.',
+      fullDescription: 'A crucial expert talk covering Technology Readiness Level (TRL), Manufacturing Readiness Level (MRL), Investment Readiness Level (IRL), and IP Commercialization. Aiming for 80% positive feedback and generating tangible tech transfer plans.',
+      contact: newEventContact
+    },
+    '2026-01-22': {
+      title: 'Sales and Marketing Strategies for Start-ups',
+      type: 'Workshop',
+      time: '02:00 PM',
+      location: 'Seminar Hall B',
+      description: 'Workshop on effective market strategies and Business Model Canvas.',
+      fullDescription: 'A focused workshop for start-ups on Effective Sales and Marketing Strategies. Teams will work on completing their Business Model Canvas (BMC) and developing robust marketing strategies.',
+      contact: newEventContact
+    },
+    '2026-02-05': {
+      title: 'Field Visit to Preincubation Units',
+      type: 'Field Visit',
+      time: '08:30 AM',
+      location: 'AICTE Idea Lab / Fab Lab',
+      description: 'Exposure visit to MSME clusters or Preincubation units.',
+      fullDescription: 'Field/Exposure visit to pre-incubation units such as AICTE Idea Labs, Fab Labs, or MSME clusters. The objective is to establish linkages and form at least one meaningful partnership.',
+      contact: newEventContact
+    },
+    '2026-02-18': {
+      title: 'Institution Innovation Hackathon',
+      type: 'Competition',
+      time: '09:00 AM',
+      location: 'Central Block',
+      description: 'Inter/Intra-Institution Innovation Competition and Reward ceremony.',
+      fullDescription: 'Organizing an Inter/Intra-Institution Innovation Competition or Hackathon. We aim for 25+ entries with the best innovations being rewarded and uploaded to the YUKTI Innovation Repository.',
+      contact: newEventContact
+    },
+    '2026-02-25': {
+      title: 'Innovation Showcase: Demo Day',
+      type: 'Exhibition',
+      time: '10:00 AM',
+      location: 'Open Air Theatre',
+      description: 'Exhibition and Poster Presentation of Innovations and Prototypes.',
+      fullDescription: 'A grand Demo Day/Exhibition to showcase projects and poster presentations of innovations. At least 10 prototypes will be showcased, with mentorship linkages provided to 6+ teams.',
+      contact: newEventContact
     }
   };
 
   function renderCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                        'July', 'August', 'September', 'October', 'November', 'December'];
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
     document.getElementById('monthYear').textContent = `${monthNames[month]} ${year}`;
 
@@ -1226,16 +829,18 @@
     }
 
     for (let i = 1; i <= lastDateOfMonth; i++) {
-      const date = new Date(year, month, i);
-      const dateStr = date.toISOString().split('T')[0];
+      // Use local date string construction to avoid timezone issues
+      const currentMonth = month + 1;
+      const fmtMonth = currentMonth < 10 ? `0${currentMonth}` : currentMonth;
+      const fmtDay = i < 10 ? `0${i}` : i;
+      const dateStr = `${year}-${fmtMonth}-${fmtDay}`;
+      
       const hasEvent = events[dateStr];
 
       let classes = 'day';
       if (hasEvent) {
         classes += ' event-day';
-        if (selectedDate === dateStr) {
-          classes += ' selected';
-        }
+        if (selectedDate === dateStr) classes += ' selected';
       }
 
       const onclickAttr = hasEvent ? `onclick="selectDate('${dateStr}')"` : '';
@@ -1256,25 +861,20 @@
     if (!event) return;
 
     selectedDate = dateStr;
-    
-    document.querySelectorAll('.day.selected').forEach(el => {
-      el.classList.remove('selected');
-    });
-    
+    document.querySelectorAll('.day.selected').forEach(el => el.classList.remove('selected'));
     const selectedEl = document.querySelector(`[data-date="${dateStr}"]`);
     if (selectedEl) selectedEl.classList.add('selected');
 
     const date = new Date(dateStr);
-    const formattedDate = date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
+    const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    
+    const status = getEventStatus(dateStr);
+    const statusClass = status.toLowerCase();
 
     const sidebar = document.getElementById('eventDetailsSidebar');
     sidebar.innerHTML = `
       <div class="sidebar-header">${formattedDate}</div>
+      <div class="status-badge ${statusClass}">${status}</div>
       <h2 class="event-title">${event.title}</h2>
       <div class="event-type-badge">${event.type}</div>
       <p class="event-description">${event.description}</p>
@@ -1293,13 +893,6 @@
             <div class="info-value">${event.location}</div>
           </div>
         </div>
-        <div class="info-row">
-          <div class="info-icon">📋</div>
-          <div class="info-content">
-            <div class="info-label">Event Type</div>
-            <div class="info-value">${event.type}</div>
-          </div>
-        </div>
       </div>
       <button class="view-details-btn" onclick="openModal('${dateStr}')">View Full Details</button>
     `;
@@ -1310,32 +903,9 @@
     if (!event) return;
 
     const date = new Date(dateStr);
-    const formattedDate = date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-
-    let agendaHTML = '';
-    if (event.agenda) {
-      agendaHTML = event.agenda.map(item => `
-        <div class="agenda-item">
-          <div class="agenda-time">${item.time}</div>
-          <div class="agenda-content">
-            <div class="agenda-title">${item.title}</div>
-            <div class="agenda-description">${item.description}</div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    let prerequisitesHTML = '';
-    if (event.prerequisites) {
-      prerequisitesHTML = event.prerequisites.map(item => `
-        <div class="prerequisite-item">${item}</div>
-      `).join('');
-    }
+    const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const status = getEventStatus(dateStr);
+    const statusClass = status.toLowerCase();
 
     const modalContent = document.getElementById('modalContent');
     modalContent.innerHTML = `
@@ -1344,7 +914,7 @@
       <div class="modal-header">
         <div class="modal-event-badge">${event.type}</div>
         <h2 class="modal-event-title">${event.title}</h2>
-        <div class="modal-event-date">📅 ${formattedDate}</div>
+        <div class="modal-event-date">📅 ${formattedDate} <span class="status-badge ${statusClass}" style="margin-left:12px">${status}</span></div>
       </div>
 
       <div class="modal-body">
@@ -1358,66 +928,19 @@
             <div class="quick-info-value">📍 ${event.location}</div>
           </div>
           <div class="quick-info-card">
-            <div class="quick-info-label">Event Type</div>
+            <div class="quick-info-label">Type</div>
             <div class="quick-info-value">📋 ${event.type}</div>
           </div>
         </div>
 
         <div class="modal-section">
-          <h3 class="modal-section-title">
-            <span class="modal-section-icon">📝</span>
-            About This Event
-          </h3>
-          <p class="modal-description">${event.fullDescription}</p>
+          <h3 class="modal-section-title"><span class="modal-section-icon">📝</span> About This Event</h3>
+          <p class="modal-description" style="color:var(--muted);line-height:1.7;">${event.fullDescription}</p>
         </div>
-
-        ${event.speaker ? `
-        <div class="modal-section">
-          <h3 class="modal-section-title">
-            <span class="modal-section-icon">👤</span>
-            Speaker
-          </h3>
-          <div class="speaker-card">
-            <div class="speaker-photo">${event.speaker.initial}</div>
-            <div class="speaker-info">
-              <div class="speaker-name">${event.speaker.name}</div>
-              <div class="speaker-title">${event.speaker.title}</div>
-              <p class="speaker-bio">${event.speaker.bio}</p>
-            </div>
-          </div>
-        </div>
-        ` : ''}
-
-        ${event.agenda ? `
-        <div class="modal-section">
-          <h3 class="modal-section-title">
-            <span class="modal-section-icon">📅</span>
-            Event Agenda
-          </h3>
-          <div class="agenda-list">
-            ${agendaHTML}
-          </div>
-        </div>
-        ` : ''}
-
-        ${event.prerequisites ? `
-        <div class="modal-section">
-          <h3 class="modal-section-title">
-            <span class="modal-section-icon">✅</span>
-            Prerequisites & Requirements
-          </h3>
-          <div class="prerequisites-list">
-            ${prerequisitesHTML}
-          </div>
-        </div>
-        ` : ''}
 
         ${event.contact ? `
         <div class="modal-section">
-          <h3 class="modal-section-title">
-            <span class="modal-section-icon">📞</span>
-            Contact Person
-          </h3>
+          <h3 class="modal-section-title"><span class="modal-section-icon">📞</span> Contact Person</h3>
           <div class="contact-card">
             <div class="contact-person">
               <div class="contact-avatar">${event.contact.initial}</div>
@@ -1426,22 +949,18 @@
                 <div class="contact-role">${event.contact.role}</div>
               </div>
             </div>
-            <div class="contact-info">
-              <div class="contact-info-item">
-                <span class="contact-icon">📱</span>
-                <span>${event.contact.phone}</span>
+            <div class="contact-info" style="display:flex;flex-direction:column;gap:8px;">
+              <div class="contact-info-item" style="display:flex;gap:10px;font-size:14px;color:var(--navy);">
+                <span class="contact-icon">📱</span><span>${event.contact.phone}</span>
               </div>
-              <div class="contact-info-item">
-                <span class="contact-icon">✉</span>
-                <span>${event.contact.email}</span>
+              <div class="contact-info-item" style="display:flex;gap:10px;font-size:14px;color:var(--navy);">
+                <span class="contact-icon">✉</span><span>${event.contact.email}</span>
               </div>
             </div>
           </div>
-        </div>
-        ` : ''}
+        </div>` : ''}
       </div>
     `;
-
     document.getElementById('modalOverlay').classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -1450,30 +969,13 @@
     document.getElementById('modalOverlay').classList.remove('active');
     document.body.style.overflow = '';
   }
+  function closeModalOnOverlay(event) { if (event.target.id === 'modalOverlay') closeModal(); }
+  document.addEventListener('keydown', function(event) { if (event.key === 'Escape') closeModal(); });
 
-  function closeModalOnOverlay(event) {
-    if (event.target.id === 'modalOverlay') {
-      closeModal();
-    }
-  }
-
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-      closeModal();
-    }
-  });
-
-  function previousMonth() {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-  }
-
-  function nextMonth() {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-  }
+  function previousMonth() { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); }
+  function nextMonth() { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); }
 
   renderCalendar();
   </script>
 </body>
-</html>
+</html> 
