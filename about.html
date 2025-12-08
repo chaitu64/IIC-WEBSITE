@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — IIC Innovation Council</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#2E2A8F;
+      --orange:#F4A238;
+      --red:#D92E2E;
+      --purple:#6B5BA8;
+      --bg:#FAF9F7;
+      --card-bg:#FFFFFF;
+      --muted:#6b6b6b;
+      --border:#E8E7E3;
+      --gap:24px;
+      --container:1200px;
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;scroll-behavior:smooth}
+    a{color:inherit;text-decoration:none}
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.02) 100%),
+        url("images/IIC.png") center/500px auto no-repeat;
+      opacity:0.15;
+      z-index:-1;
+      transform:translateZ(0);
+    }
+
+    .wrap{
+      width:100vw;
+      margin:0;
+      padding:0;
+      background: transparent !important;
+    }
+
+    /* HEADER */
+    header{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px 40px;
+      margin-bottom:0;
+      position:relative;
+      background:transparent !important;
+      z-index:100;
+      box-shadow:none;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      gap: 48px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:18px;
+      color:var(--navy)
+    }
+    .brand img{
+      height:40px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,0.02));
+    }
+    nav{
+      display:flex;
+      gap:32px;
+      align-items:center
+    }
+    nav a{
+      font-size:14px;
+      color:var(--muted);
+      transition:color .2s ease;
+      font-weight:500
+    }
+    nav a:hover{color:var(--navy)}
+    nav a.active{color:var(--navy);font-weight:600}
+    @media(max-width:768px){
+      nav{display:none}
+      header{padding:16px 20px}
+      .brand{font-size:16px}
+      .header-inner{justify-content: flex-start;}
+    }
+
+    /* PAGE HERO */
+    .page-hero{
+      background:linear-gradient(135deg,rgba(46,42,143,0.05),rgba(107,91,168,0.03));
+      padding:80px 40px 60px;
+      text-align:center;
+      margin:0;
+      border:none;
+    }
+    .page-hero h1{
+      font-size:48px;
+      font-weight:700;
+      margin:0 0 16px;
+      background:linear-gradient(135deg, var(--navy), var(--purple));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .page-hero p{
+      font-size:18px;
+      color:var(--muted);
+      max-width:700px;
+      margin:0 auto;
+      line-height:1.6;
+    }
+    @media(max-width:768px){
+      .page-hero{padding:60px 20px 40px}
+      .page-hero h1{font-size:32px}
+      .page-hero p{font-size:16px}
+    }
+
+    /* CONTENT SECTIONS */
+    .content-section{
+      max-width:1200px;
+      margin:0 auto;
+      padding:60px 40px;
+    }
+    @media(max-width:768px){
+      .content-section{padding:40px 20px}
+    }
+
+    .section-title{
+      font-size:32px;
+      font-weight:700;
+      color:var(--navy);
+      margin:0 0 32px;
+      position:relative;
+      padding-bottom:16px;
+    }
+    .section-title::after{
+      content:"";
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:80px;
+      height:4px;
+      background:linear-gradient(90deg,var(--orange),var(--purple));
+      border-radius:2px;
+    }
+
+    .text-block{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:16px;
+      margin-bottom:24px;
+    }
+
+    /* STATS GRID */
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:24px;
+      margin:48px 0;
+    }
+    @media(max-width:1024px){
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:600px){
+      .stats-grid{grid-template-columns:1fr}
+    }
+
+    .stat-card{
+      background:var(--card-bg);
+      padding:32px 24px;
+      text-align:center;
+      border-radius:16px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.04);
+      transition:all .3s ease;
+    }
+    .stat-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 8px 32px rgba(0,0,0,0.08);
+    }
+    .stat-number{
+      font-size:36px;
+      font-weight:700;
+      color:var(--navy);
+      margin:0 0 8px;
+    }
+    .stat-label{
+      font-size:14px;
+      color:var(--muted);
+      font-weight:500;
+    }
+
+    /* INFO CARDS */
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:28px;
+      margin:32px 0;
+    }
+    @media(max-width:768px){
+      .info-grid{grid-template-columns:1fr}
+    }
+
+    .info-card{
+      background:var(--card-bg);
+      padding:32px;
+      border-radius:16px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.04);
+      transition:all .3s ease;
+    }
+    .info-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 24px rgba(0,0,0,0.06);
+    }
+    .info-card h3{
+      font-size:20px;
+      font-weight:700;
+      color:var(--navy);
+      margin:0 0 16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .info-card ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .info-card li{
+      color:var(--muted);
+      line-height:1.8;
+      padding:8px 0;
+      padding-left:24px;
+      position:relative;
+    }
+    .info-card li::before{
+      content:"✓";
+      position:absolute;
+      left:0;
+      color:var(--orange);
+      font-weight:700;
+    }
+
+    .icon{
+      width:32px;
+      height:32px;
+      background:linear-gradient(135deg,var(--orange),#F59A4C);
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:18px;
+    }
+
+    /* TIMELINE */
+    .timeline{
+      position:relative;
+      padding:20px 0;
+      margin:40px 0;
+    }
+    .timeline::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:0;
+      bottom:0;
+      width:2px;
+      background:linear-gradient(180deg,var(--navy),var(--purple));
+      transform:translateX(-50%);
+    }
+    @media(max-width:768px){
+      .timeline::before{left:20px}
+    }
+
+    .timeline-item{
+      display:flex;
+      gap:40px;
+      margin-bottom:48px;
+      position:relative;
+    }
+    .timeline-item:nth-child(even){
+      flex-direction:row-reverse;
+    }
+    @media(max-width:768px){
+      .timeline-item,.timeline-item:nth-child(even){
+        flex-direction:row;
+        padding-left:60px;
+      }
+    }
+
+    .timeline-content{
+      flex:1;
+      background:var(--card-bg);
+      padding:24px;
+      border-radius:12px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.04);
+    }
+    .timeline-year{
+      font-size:20px;
+      font-weight:700;
+      color:var(--navy);
+      margin:0 0 8px;
+    }
+    .timeline-text{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .timeline-dot{
+      position:absolute;
+      left:50%;
+      width:16px;
+      height:16px;
+      background:var(--orange);
+      border:4px solid white;
+      border-radius:50%;
+      transform:translateX(-50%);
+      box-shadow:0 0 0 4px rgba(244,162,56,0.2);
+    }
+    @media(max-width:768px){
+      .timeline-dot{left:20px}
+    }
+
+    /* PARTNERS */
+    .partners-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:24px;
+      margin:40px 0;
+    }
+    @media(max-width:1024px){
+      .partners-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:600px){
+      .partners-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    .partner-card{
+      background:var(--card-bg);
+      padding:32px;
+      border-radius:12px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.04);
+      text-align:center;
+      transition:all .3s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:120px;
+    }
+    .partner-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 24px rgba(0,0,0,0.06);
+    }
+    .partner-name{
+      font-weight:600;
+      color:var(--navy);
+      font-size:15px;
+    }
+
+    /* FOOTER */
+    footer{
+      background:#111;
+      color:#fff;
+      padding:60px 0 0 0;
+      margin-top:80px;
+    }
+    @media(max-width:768px){footer{padding:40px 0}}
+
+    footer h4{font-size:20px;font-weight:700;margin-bottom:16px}
+    footer h5{font-size:15px;font-weight:600;margin-bottom:12px}
+    footer p,footer a{color:#bbb;line-height:1.7;font-size:15px}
+    footer a:hover{color:white}
+
+    .footer-top{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:40px 24px;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+    @media(max-width:768px){
+      .footer-top{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:480px){
+      .footer-top{grid-template-columns:1fr}
+    }
+
+    .footer-divider{border:0;border-top:1px solid #222;margin:40px 0 24px 0}
+    .footer-bottom{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(30px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    .stat-card{animation:fadeInUp .5s ease forwards;opacity:0}
+    .stat-card:nth-child(1){animation-delay:.1s}
+    .stat-card:nth-child(2){animation-delay:.2s}
+    .stat-card:nth-child(3){animation-delay:.3s}
+    .stat-card:nth-child(4){animation-delay:.4s}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="brand">
+          <img src="images/IIC.png" alt="IIC Logo" />
+          <span>IIC</span>
+        </div>
+        <nav>
+          <a href="home.html">Home</a>
+          <a href="events.html">Events</a>
+          <a href="calendar.html">Calendar</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="teams.html">Teams</a>
+          <a href="contact.html">Contact</a>
+          <a href="about.html" class="active">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <h1>About VVIT IIC</h1>
+      <p>Fostering a culture of innovation and entrepreneurship at Vasireddy Venkatadri Institute of Technology through comprehensive programs, world-class infrastructure, and strategic partnerships.</p>
+    </section>
+
+    <!-- MISSION & VISION -->
+    <section class="content-section">
+      <h2 class="section-title">Our Mission & Vision</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><span class="icon">V</span> Vision</h3>
+          <p class="text-block">To become a resourceful Venture Development Centre by supporting and assisting new-age innovators and entrepreneurial talents among the student community.</p>
+        </div>
+        <div class="info-card">
+          <h3><span class="icon">M</span> Mission</h3>
+          <ul>
+            <li>Establishing Venture Development Centre with Pre-Incubation facilities</li>
+            <li>Building contacts with Incubation Centers nationwide</li>
+            <li>Creating sustainable Innovation, R&D, and Engineering ecosystem</li>
+            <li>Aligning with the 'Startup India' flagship initiative</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="content-section" style="background:linear-gradient(135deg,rgba(107,91,168,0.05),rgba(244,162,56,0.03));padding:60px 40px;margin:0;">
+      <h2 class="section-title">Our Achievements</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">Band-A</div>
+          <div class="stat-label">ARIIA Ranking 2020</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">15+</div>
+          <div class="stat-label">State-of-the-art Labs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">690+</div>
+          <div class="stat-label">Journal Papers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">13</div>
+          <div class="stat-label">Patents Published</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OBJECTIVES -->
+    <section class="content-section">
+      <h2 class="section-title">Key Objectives</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><span class="icon">🚀</span> Incubation</h3>
+          <ul>
+            <li>Establish Technology/Business Incubator/Accelerator</li>
+            <li>Facilitate Venture Capital funding of minimum INR 1 Crore</li>
+            <li>Support pre-incubation with networking capabilities</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><span class="icon">💡</span> Innovation</h3>
+          <ul>
+            <li>Incubate 10+ innovative technology solutions</li>
+            <li>Focus on Healthcare, Agriculture, Environment, Education</li>
+            <li>Encourage prototype development and testing</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><span class="icon">💰</span> Funding Support</h3>
+          <ul>
+            <li>Seed Grant up to INR 12 Lakhs per department</li>
+            <li>Support for idea validation and market research</li>
+            <li>Merit-based selection through Implementation Committee</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><span class="icon">🎓</span> Student Programs</h3>
+          <ul>
+            <li>Academic credits for entrepreneurship courses</li>
+            <li>Mandatory apprenticeship schemes</li>
+            <li>Semester breaks for startup development</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFRASTRUCTURE -->
+    <section class="content-section">
+      <h2 class="section-title">World-Class Infrastructure</h2>
+      <p class="text-block">VVIT has established cutting-edge facilities to nurture innovation and provide hands-on experience with the latest technologies.</p>
+      
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2016</div>
+            <p class="timeline-text"><strong>Siemens Centre of Excellence</strong> — Established under MoU with APSSDC, featuring over 15 state-of-the-art laboratories for advanced engineering education.</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2018</div>
+            <p class="timeline-text"><strong>Google Code Labs</strong> — First-ever Google Developers CodeLabs in India, built with Google's design standards to promote coding excellence.</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2020</div>
+            <p class="timeline-text"><strong>Pre-Incubation Center</strong> — Dedicated facilities for nurturing student projects across healthcare, agriculture, clean environment, and education sectors.</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">Ongoing</div>
+            <p class="timeline-text"><strong>Dassault Systems Lab & CM Skill Center</strong> — Advanced design, simulation facilities, and skill development programs for competitive advantage.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTNERSHIPS -->
+    <section class="content-section" style="background:linear-gradient(135deg,rgba(46,42,143,0.03),rgba(107,91,168,0.02));padding:60px 40px;margin:0;">
+      <h2 class="section-title">Strategic Partnerships</h2>
+      <p class="text-block">We collaborate with leading institutions and organizations to provide our students with world-class opportunities and resources.</p>
+      <div class="partners-grid">
+        <div class="partner-card">
+          <div class="partner-name">Google Inc. USA</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">Siemens India</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">Stanford University</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">ISB Hyderabad</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">Northeastern University</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">APSSDC</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">JNTUK</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">Dassault Systems</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECOGNITION -->
+    <section class="content-section">
+      <h2 class="section-title">Recognition & Rankings</h2>
+      <div class="text-block">
+        <p>VVIT has achieved significant recognition for its innovation efforts at both national and state levels. The institute secured a prestigious position in the Atal Ranking of Institutions on Innovation Achievements (ARIIA) 2020, ranking in Band-A (6th-25th position) among private self-financed colleges across India.</p>
+        <p style="margin-top:16px;">Out of 674 institutions that participated nationally, only 17 institutions from Andhra Pradesh received this honor, with VVIT being one of only three colleges from the state in its category. This recognition validates our commitment to fostering innovation and entrepreneurship.</p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-top">
+        <div>
+          <h4>VVIT IIC</h4>
+          <p>Institution's Innovation Council (IIC) promotes innovation and entrepreneurship within academic institutions.</p>
+        </div>
+        <div>
+          <h5>Quick Links</h5>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li><a href="home.html" style="display:block;padding:4px 0;">Home</a></li>
+            <li><a href="events.html" style="display:block;padding:4px 0;">Events</a></li>
+            <li><a href="gallery.html" style="display:block;padding:4px 0;">Gallery</a></li>
+            <li><a href="teams.html" style="display:block;padding:4px 0;">Teams</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Resources</h5>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li><a href="#" style="display:block;padding:4px 0;">Startup Policy</a></li>
+            <li><a href="#" style="display:block;padding:4px 0;">Funding Support</a></li>
+            <li><a href="#" style="display:block;padding:4px 0;">Incubation</a></li>
+            <li><a href="#" style="display:block;padding:4px 0;">Mentorship</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li><a href="contact.html" style="display:block;padding:4px 0;">Get in Touch</a></li>
+            <li><a href="#" style="display:block;padding:4px 0;">Location</a></li>
+            <li><a href="#" style="display:block;padding:4px 0;">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+          <a href="#" style="font-size:14px;">Privacy Policy</a>
+          <a href="#" style="font-size:14px;">Terms & Conditions</a>
+          <a href="#" style="font-size:14px;">Code of Conduct</a>
+        </div>
+        <div style="display:flex;gap:16px;">
+          <a href="#" aria-label="Twitter" style="font-size:18px;"><span>🐦</span></a>
+          <a href="#" aria-label="Instagram" style="font-size:18px;"><span>📷</span></a>
+          <a href="#" aria-label="Facebook" style="font-size:18px;"><span>💬</span></a>
+          <a href="#" aria-label="LinkedIn" style="font-size:18px;"><span>💼</span></a>
+        </div>
+      </div>
+      <p style="color:#888;font-size:14px;margin:32px 0 0 0;text-align:center;padding:0 24px;">&copy; <span id="year"></span> Institution's Innovation Council, VVIT. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if(target) target.scrollIntoView({behavior: 'smooth'});
+      });
+    });
+  </script>
+</body>
+</html>

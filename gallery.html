@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIC — Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#2E2A8F;
+      --orange:#F4A238;
+      --red:#D92E2E;
+      --purple:#6B5BA8;
+      --bg:#FAF9F7;
+      --card-bg:#FFFFFF;
+      --muted:#6b6b6b;
+      --border:#E8E7E3;
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;font-family:Poppins,system-ui;background:var(--bg);color:#111;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 40px;
+      background:rgba(250,249,247,0.95);
+      backdrop-filter:blur(8px);
+      position:sticky;
+      top:0;
+      z-index:100;
+      box-shadow:0 1px 0 #eee;
+    }
+    .brand{font-weight:700;color:var(--navy);font-size:18px;display:flex;align-items:center;gap:10px}
+    nav{display:flex;gap:32px}
+    nav a{font-size:14px;color:var(--muted);font-weight:500;transition:.3s}
+    nav a:hover{color:var(--navy)}
+
+    @media(max-width:768px){
+      header{padding:16px 20px}
+      nav{gap:16px;font-size:12px}
+    }
+
+    main{max-width:1400px;margin:auto;padding:60px 20px}
+
+    /* HERO SECTION */
+    .hero-gallery{
+      text-align:center;
+      margin-bottom:80px;
+      padding:50px 30px;
+      background:linear-gradient(135deg,rgba(46,42,143,0.07),rgba(244,162,56,0.04));
+      border-radius:var(--radius);
+    }
+
+    .hero-gallery h1{
+      font-size:48px;
+      font-weight:700;
+      margin:0 0 16px;
+      background:linear-gradient(135deg,var(--navy),var(--purple));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .hero-gallery p{
+      font-size:18px;
+      color:var(--muted);
+      max-width:700px;
+      margin:0 auto;
+      line-height:1.6;
+    }
+
+    @media(max-width:768px){
+      .hero-gallery{padding:30px 15px;margin-bottom:60px}
+      .hero-gallery h1{font-size:32px}
+      .hero-gallery p{font-size:16px}
+    }
+
+    /* FILTER TABS */
+    .filter-container{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin-bottom:60px;
+      flex-wrap:wrap;
+    }
+
+    .filter-btn{
+      background:var(--card-bg);
+      border:2px solid var(--border);
+      color:var(--muted);
+      padding:10px 26px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+      transition:all .3s ease;
+    }
+
+    .filter-btn.active{
+      background:linear-gradient(135deg,var(--orange),#F59A4C);
+      color:white;
+      border-color:var(--orange);
+    }
+
+    .filter-btn:hover{
+      border-color:var(--navy);
+      color:var(--navy);
+    }
+
+    /* GALLERY GRID */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:24px;
+      margin-bottom:80px;
+    }
+
+    .gallery-item{
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      aspect-ratio:1;
+      cursor:pointer;
+      background:var(--card-bg);
+      box-shadow:0 4px 20px rgba(0,0,0,0.05);
+      transition:all .3s ease;
+    }
+
+    .gallery-item:hover{
+      transform:translateY(-8px);
+      box-shadow:0 12px 40px rgba(0,0,0,0.1);
+    }
+
+    .gallery-item img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .3s ease;
+    }
+
+    .gallery-item:hover img{
+      transform:scale(1.05);
+    }
+
+    .gallery-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg,rgba(46,42,143,0.7),rgba(244,162,56,0.5));
+      opacity:0;
+      transition:opacity .3s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      color:white;
+      text-align:center;
+      padding:24px;
+    }
+
+    .gallery-item:hover .gallery-overlay{
+      opacity:1;
+    }
+
+    .overlay-title{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .overlay-meta{
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    /* MODAL */
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.9);
+      z-index:1000;
+      animation:fadeIn .3s ease;
+      overflow:hidden;
+    }
+
+    .modal.active{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    .modal-content{
+      position:relative;
+      max-width:90vw;
+      max-height:90vh;
+      display:flex;
+      flex-direction:column;
+      background:#111;
+      border-radius:var(--radius);
+      overflow:hidden;
+      animation:slideUp .3s ease;
+    }
+
+    @keyframes slideUp{
+      from{transform:translateY(50px);opacity:0}
+      to{transform:translateY(0);opacity:1}
+    }
+
+    .modal-image{
+      width:100%;
+      max-height:70vh;
+      object-fit:contain;
+      background:#000;
+    }
+
+    .modal-info{
+      padding:24px;
+      background:#111;
+      color:white;
+    }
+
+    .modal-title{
+      font-size:24px;
+      font-weight:700;
+      margin:0 0 8px;
+      color:var(--orange);
+    }
+
+    .modal-date{
+      font-size:14px;
+      color:#bbb;
+      margin:0 0 12px;
+    }
+
+    .modal-description{
+      font-size:14px;
+      color:#ccc;
+      line-height:1.6;
+      margin:0;
+    }
+
+    .modal-close{
+      position:absolute;
+      top:20px;
+      right:20px;
+      width:40px;
+      height:40px;
+      background:rgba(255,255,255,0.1);
+      border:none;
+      border-radius:50%;
+      color:white;
+      font-size:28px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:all .2s ease;
+      z-index:1001;
+    }
+
+    .modal-close:hover{
+      background:rgba(255,255,255,0.2);
+    }
+
+    .modal-nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(255,255,255,0.1);
+      border:none;
+      color:white;
+      font-size:32px;
+      width:50px;
+      height:50px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:all .2s ease;
+      z-index:1001;
+    }
+
+    .modal-nav:hover{
+      background:rgba(255,255,255,0.2);
+    }
+
+    .modal-prev{left:20px}
+    .modal-next{right:20px}
+
+    /* STATISTICS */
+    .gallery-stats{
+      background:linear-gradient(135deg,var(--navy),var(--purple));
+      color:white;
+      padding:48px 40px;
+      border-radius:var(--radius);
+      text-align:center;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:40px;
+      margin-top:24px;
+    }
+
+    .stat-item h3{
+      font-size:36px;
+      margin:0 0 8px;
+      color:var(--orange);
+    }
+
+    .stat-item p{
+      font-size:14px;
+      margin:0;
+      opacity:0.9;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .gallery-item{animation:fadeInUp .6s ease forwards}
+    .gallery-item:nth-child(1){animation-delay:.1s}
+    .gallery-item:nth-child(2){animation-delay:.15s}
+    .gallery-item:nth-child(3){animation-delay:.2s}
+    .gallery-item:nth-child(4){animation-delay:.1s}
+    .gallery-item:nth-child(5){animation-delay:.15s}
+    .gallery-item:nth-child(6){animation-delay:.2s}
+
+    /* FOOTER */
+    footer{
+      background:#111;
+      color:#bbb;
+      padding:40px 20px;
+      text-align:center;
+      font-size:14px;
+      margin-top:80px;
+    }
+
+    @media(max-width:768px){
+      .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+      .modal-nav{width:40px;height:40px;font-size:24px}
+      .gallery-stats{padding:32px 20px}
+      .stats-grid{gap:24px}
+      .stat-item h3{font-size:28px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">IIC</div>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="teams.html">Teams</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <div class="hero-gallery">
+      <h1>Event Gallery</h1>
+      <p>Explore the highlights from our past events, workshops, and community gatherings. Witness the innovation and collaboration that define IIC.</p>
+    </div>
+
+    <!-- FILTER BUTTONS -->
+    <div class="filter-container">
+      <button class="filter-btn active" data-filter="all">All Events</button>
+      <button class="filter-btn" data-filter="hackathon">Hackathons</button>
+      <button class="filter-btn" data-filter="workshop">Workshops</button>
+      <button class="filter-btn" data-filter="bootcamp">Bootcamp</button>
+      <button class="filter-btn" data-filter="summit">Summit</button>
+    </div>
+
+    <!-- GALLERY GRID -->
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Hackathon 2025 -->
+      <div class="gallery-item" data-category="hackathon" data-title="Hackathon Opening" data-date="January 15, 2025" data-description="Developers gathered for the 36-hour coding sprint, ready to tackle real-world challenges.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#3498db" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Hackathon 2025</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Hackathon Opening</div>
+          <div class="overlay-meta">Jan 15, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="hackathon" data-title="Teams Coding" data-date="January 15-16, 2025" data-description="Participants collaborate intensively to bring their innovative solutions to life.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#9b59b6" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Team Coding</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Teams Coding</div>
+          <div class="overlay-meta">Jan 15-16, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="hackathon" data-title="Prize Ceremony" data-date="January 17, 2025" data-description="Winners are announced and celebrated for their outstanding innovative solutions.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#f39c12" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Prize Ceremony</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Prize Ceremony</div>
+          <div class="overlay-meta">Jan 17, 2025</div>
+        </div>
+      </div>
+
+      <!-- Startup Bootcamp -->
+      <div class="gallery-item" data-category="bootcamp" data-title="Bootcamp Session 1" data-date="February 1, 2025" data-description="Entrepreneurs dive into idea refinement and market validation techniques with expert mentors.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#e74c3c" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Bootcamp Day 1</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Bootcamp Session 1</div>
+          <div class="overlay-meta">Feb 1, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="bootcamp" data-title="Mentorship Sessions" data-date="February 5, 2025" data-description="One-on-one mentoring with industry experts to guide startup growth and strategy.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#1abc9c" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Mentorship</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Mentorship Sessions</div>
+          <div class="overlay-meta">Feb 5, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="bootcamp" data-title="Investor Pitch" data-date="February 15, 2025" data-description="Founders present their refined pitches to a panel of investors and industry leaders.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#34495e" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Pitch Day</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Investor Pitch</div>
+          <div class="overlay-meta">Feb 15, 2025</div>
+        </div>
+      </div>
+
+      <!-- Workshops -->
+      <div class="gallery-item" data-category="workshop" data-title="Design Thinking Workshop" data-date="March 2, 2025" data-description="Participants learn design thinking methodology through hands-on case studies and exercises.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#16a085" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Design Workshop</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Design Thinking Workshop</div>
+          <div class="overlay-meta">Mar 2, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="workshop" data-title="AI & Machine Learning" data-date="March 10, 2025" data-description="Technical workshop exploring AI applications for innovation and business solutions.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#8e44ad" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">AI Workshop</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">AI & Machine Learning</div>
+          <div class="overlay-meta">Mar 10, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="workshop" data-title="Business Model Canvas" data-date="March 18, 2025" data-description="Interactive session on developing and validating sustainable business models.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#c0392b" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Business Canvas</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Business Model Canvas</div>
+          <div class="overlay-meta">Mar 18, 2025</div>
+        </div>
+      </div>
+
+      <!-- Summit -->
+      <div class="gallery-item" data-category="summit" data-title="Summit Opening Keynote" data-date="April 5, 2025" data-description="Industry leaders share insights on the future of innovation and entrepreneurship.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#2980b9" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Summit Opening</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Summit Opening Keynote</div>
+          <div class="overlay-meta">Apr 5, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="summit" data-title="Panel Discussion" data-date="April 6, 2025" data-description="Experts discuss emerging trends, challenges, and opportunities in innovation.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#27ae60" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Panel Discussion</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Panel Discussion</div>
+          <div class="overlay-meta">Apr 6, 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="summit" data-title="Networking Reception" data-date="April 7, 2025" data-description="Summit attendees connect, collaborate, and build meaningful professional relationships.">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#f1c40f" width="400" height="400"/><text x="200" y="200" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">Networking</text></svg>
+        <div class="gallery-overlay">
+          <div class="overlay-title">Networking Reception</div>
+          <div class="overlay-meta">Apr 7, 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATISTICS -->
+    <section class="gallery-stats">
+      <h2>IIC by the Numbers</h2>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <h3>50+</h3>
+          <p>Photos Captured</p>
+        </div>
+        <div class="stat-item">
+          <h3>12</h3>
+          <p>Events Hosted</p>
+        </div>
+        <div class="stat-item">
+          <h3>500+</h3>
+          <p>Participants</p>
+        </div>
+        <div class="stat-item">
+          <h3>100%</h3>
+          <p>Innovation Impact</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="year"></span> Institution's Innovation Council. All rights reserved.</p>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <img class="modal-image" id="modalImage" src="" alt="">
+      <div class="modal-info">
+        <h3 class="modal-title" id="modalTitle"></h3>
+        <p class="modal-date" id="modalDate"></p>
+        <p class="modal-description" id="modalDescription"></p>
+      </div>
+      <button class="modal-nav modal-prev" onclick="previousImage()">&lt;</button>
+      <button class="modal-nav modal-next" onclick="nextImage()">&gt;</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    let currentIndex = 0;
+    let filteredItems = [];
+
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    // Filter functionality
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+        galleryItems.forEach(item => {
+          if(filter === 'all' || item.getAttribute('data-category') === filter) {
+            item.style.display = 'block';
+            item.style.animation = 'fadeInUp .6s ease forwards';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // Update filtered items
+        filteredItems = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+      });
+    });
+
+    // Modal functionality
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        currentIndex = Array.from(galleryItems).indexOf(item);
+        openModal(item);
+      });
+    });
+
+    function openModal(item) {
+      document.getElementById('modalImage').src = item.querySelector('svg').outerHTML;
+      document.getElementById('modalTitle').textContent = item.getAttribute('data-title');
+      document.getElementById('modalDate').textContent = item.getAttribute('data-date');
+      document.getElementById('modalDescription').textContent = item.getAttribute('data-description');
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    function nextImage() {
+      const visibleItems = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+      const currentVisible = visibleItems.findIndex(item => item === galleryItems[currentIndex]);
+      const nextIndex = (currentVisible + 1) % visibleItems.length;
+      currentIndex = Array.from(galleryItems).indexOf(visibleItems[nextIndex]);
+      openModal(galleryItems[currentIndex]);
+    }
+
+    function previousImage() {
+      const visibleItems = Array.from(galleryItems).filter(item => item.style.display !== 'none');
+      const currentVisible = visibleItems.findIndex(item => item === galleryItems[currentIndex]);
+      const prevIndex = (currentVisible - 1 + visibleItems.length) % visibleItems.length;
+      currentIndex = Array.from(galleryItems).indexOf(visibleItems[prevIndex]);
+      openModal(galleryItems[currentIndex]);
+    }
+
+    // Close modal on background click
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if(e.target === document.getElementById('modal')) {
+        closeModal();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if(document.getElementById('modal').classList.contains('active')) {
+        if(e.key === 'ArrowRight') nextImage();
+        if(e.key === 'ArrowLeft') previousImage();
+        if(e.key === 'Escape') closeModal();
+      }
+    });
+
+    // Initialize filtered items
+    filteredItems = Array.from(galleryItems);
+  </script>
+</body>
+</html>

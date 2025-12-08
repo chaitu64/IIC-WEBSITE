@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIC — Innovation Council</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#2E2A8F;
+      --orange:#F4A238;
+      --red:#D92E2E;
+      --purple:#6B5BA8;
+      --bg:#FAF9F7;
+      --card-bg:#FFFFFF;
+      --muted:#6b6b6b;
+      --border:#E8E7E3;
+      --gap:24px;
+      --container:1200px;
+      --radius:16px;
+      --pointer-x: 50%;
+      --pointer-y: 50%;
+      --pointer-from-center: 0;
+      --pointer-from-top: 0.5;
+      --pointer-from-left: 0.5;
+      --card-opacity: 0;
+      --rotate-x: 0deg;
+      --rotate-y: 0deg;
+      --poster-pointer-x: 50%;
+      --poster-pointer-y: 50%;
+      --poster-pointer-from-center: 0;
+      --poster-pointer-from-top: 0.5;
+      --poster-pointer-from-left: 0.5;
+      --poster-rotate-x: 0deg;
+      --poster-rotate-y: 0deg;
+      --poster-card-opacity: 0;
+    }
+
+      *{box-sizing:border-box}
+      html,body{height:100%;margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;scroll-behavior:smooth}
+      a{color:inherit;text-decoration:none}
+
+      /* ==== BACKGROUND LOGO WATERMARK (GLOBAL) ==== */
+      body::before{
+        content:"";
+        position:fixed;
+        inset:0;
+        background:
+          radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.02) 100%),
+          url("images/IIC.png") center/500px auto no-repeat; /* increased from 480px to 700px */
+        opacity:0.15;
+        z-index:-1;
+        transform:translateZ(0);
+      }
+
+      .wrap{
+        width:100vw;
+        margin:0;
+        padding:0;
+        background: transparent !important;
+      }
+
+      /* HEADER */
+      header{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:20px 40px 20px 40px;
+        margin-bottom:0;
+        position:relative;
+        background:transparent !important;
+        z-index:100;
+        box-shadow:none;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* move brand to left, nav to right */
+        width: 100%;
+        max-width: 1200px;
+        gap: 48px;
+      }
+      .brand{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        font-weight:700;
+        font-size:18px;
+        color:var(--navy)
+      }
+      .brand img{
+        height:40px;
+        width:auto;
+        display:block;
+        filter: drop-shadow(0 1px 0 rgba(0,0,0,0.02));
+      }
+      nav{
+        display:flex;
+        gap:32px;
+        align-items:center
+      }
+      nav a{
+        font-size:14px;
+        color:var(--muted);
+        transition:color .2s ease;
+        font-weight:500
+      }
+      nav a:hover{color:var(--navy)}
+      @media(max-width:768px){
+        nav{display:none}
+        header{padding:16px 0;margin-bottom:8px}
+        .brand{font-size:16px}
+        .header-inner{justify-content: flex-start;}
+      }
+
+      /* HERO - FULLY TRANSPARENT */
+      .hero{
+        display:grid;
+        grid-template-columns:1fr 480px;
+        gap:48px;
+        align-items:center;
+        padding:60px 40px 80px 40px;
+        position:relative;
+        margin:0;
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      @media(max-width:1024px){
+        .hero{
+          grid-template-columns:1fr 380px;
+          gap:32px;
+          padding:40px 20px 60px 20px;
+        }
+      }
+
+      @media(max-width:768px){
+        .hero{
+          grid-template-columns:1fr;
+          gap:32px;
+          padding:20px 10px 40px 10px;
+        }
+      }
+
+      .hero-left h1{
+        font-size:52px;
+        font-weight:700;
+        line-height:1.2;
+        margin:0 0 16px;
+        background:linear-gradient(135deg, var(--navy), var(--purple));
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        background-clip:text;
+      }
+      @media(max-width:768px){.hero-left h1{font-size:36px}}
+
+      .hero-left .subtitle{font-size:18px;color:var(--muted);line-height:1.6;margin-bottom:28px;max-width:520px}
+      @media(max-width:768px){.hero-left .subtitle{font-size:16px;margin-bottom:24px}}
+
+      .cta-group{display:flex;gap:16px;align-items:center}
+      @media(max-width:480px){.cta-group{flex-direction:column;width:100%}}
+
+      .cta{display:inline-block;background:linear-gradient(135deg,var(--orange),#F59A4C);color:white;padding:14px 32px;border-radius:999px;font-weight:600;border:none;cursor:pointer;box-shadow:0 8px 24px rgba(244,162,56,0.3);transition:all .3s ease;font-size:15px}
+      .cta:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(244,162,56,0.4)}
+      .cta:active{transform:translateY(-2px)}
+      @media(max-width:480px){.cta{width:100%;padding:16px 28px}}
+
+      .cta-secondary{background:white;color:var(--navy);border:2px solid var(--navy);box-shadow:0 4px 16px rgba(46,42,143,0.1)}
+      .cta-secondary:hover{background:var(--navy);color:white;box-shadow:0 8px 28px rgba(46,42,143,0.2)}
+
+      /* Hero Right - Poster with animation */
+      .hero-right{position:relative;display:flex;align-items:center;justify-content:center}
+      .poster-wrap{
+        position:relative;
+        width:auto;
+        max-width:none;
+        aspect-ratio:auto;
+        overflow:visible;
+        box-shadow:none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: unset;
+        height: auto;
+        border-radius:0;
+        background: none !important;
+        backdrop-filter: none;
+        border: none !important;
+        transform-style: flat;
+        will-change: unset;
+        transition: none;
+        z-index: 0;
+        perspective: none;
+      }
+
+      /* Remove the glow behind the poster */
+      .poster-wrap::before{
+        display: none !important;
+        content: none !important;
+      }
+
+      .poster-tilt-wrapper {
+        perspective: 600px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: float 8s ease-in-out infinite;
+        /* allow pointer events for tilt */
+        touch-action: none;
+        --poster-card-radius: 5px;
+      }
+      @keyframes float {
+        0%,100% { transform: translateY(0px);}
+        50% { transform: translateY(-12px);}
+      }
+      .poster-tilt-wrapper::before {
+        content: '';
+        position: absolute;
+        inset: -18%;
+        background:
+          radial-gradient(70% 60% at 60% 40%, rgba(46,42,143,0.45), transparent 70%),
+          radial-gradient(60% 50% at 30% 70%, rgba(244,162,56,0.38), transparent 70%);
+        filter: blur(38px);
+        z-index: -1;
+        animation: posterGlow 6s ease-in-out infinite alternate;
+        border-radius: var(--poster-card-radius);
+        transition: all 0.5s ease;
+        transform: scale(0.8) translate3d(0,0,0.1px);
+        pointer-events: none;
+      }
+      @keyframes posterGlow {
+        0% { opacity: 0.75; transform: scale(0.8);}
+        50% { opacity: 0.95; transform: scale(0.83);}
+        100% { opacity: 0.8; transform: scale(0.78);}
+      }
+      .poster-tilt-wrapper.active::before,
+      .poster-tilt-wrapper:hover::before {
+        filter: contrast(1) saturate(2) blur(40px) opacity(1);
+        transform: scale(0.9) translate3d(0,0,0.1px);
+      }
+      .poster {
+        width: 420px;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        border: none !important;
+        border-radius: var(--poster-card-radius);
+        background: none !important;
+        box-shadow: rgba(0,0,0,0.18) calc((var(--poster-pointer-from-left,0.5) * 10px) - 3px)
+          calc((var(--poster-pointer-from-top,0.5) * 20px) - 6px) 20px -5px;
+        position: relative;
+        z-index: 1;
+        animation: none;
+        transition: transform 0.5s cubic-bezier(.25,.8,.25,1), box-shadow 0.3s;
+        will-change: transform;
+        transform:
+          translate3d(0,0,0.1px)
+          rotateX(var(--poster-rotate-y,0deg))
+          rotateY(var(--poster-rotate-x,0deg));
+      }
+      .poster-tilt-wrapper.active .poster,
+      .poster-tilt-wrapper:hover .poster {
+        transition: none;
+      }
+      @media(max-width:768px){
+        .poster { width: 320px; }
+      }
+
+      /* DIVIDER */
+      .divider{background: none !important;border: none !important;height: 32px;margin: 0 0 0 0;}
+      @media(max-width:768px){.divider{margin:40px 0}}
+
+      /* ABOUT */
+      .about{
+        background:linear-gradient(135deg,rgba(107,91,168,0.08),rgba(244,162,56,0.04));
+        padding:60px 40px;
+        border-radius:0;
+        border:none;
+        margin:0;
+        box-shadow:none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        text-align: left;
+      }
+      .about-img {
+        flex: 0 0 520px;
+        max-width: 520px;
+        min-width: 340px;
+        height: 110%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .about-img img {
+        width: 110%;
+        max-width: 500px;
+        height: auto;
+        min-height: 340px;
+        object-fit: contain;
+        box-shadow: none;
+        background: transparent;
+      }
+      .about-content {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+      }
+      .about-content h2 {
+        font-size:32px;
+        font-weight:700;
+        margin:0 0 16px;
+        color:var(--navy)
+      }
+      .about-content p {
+        color:var(--muted);
+        line-height:1.8;
+        font-size:15px;
+        margin:0;
+        max-width: 700px;
+      }
+      @media(max-width:900px){
+        .about{flex-direction:column;gap:32px;padding:40px 10px;}
+        .about-img{max-width:100%;width:100%;min-width:0;}
+        .about-img img{max-width:100%;min-height:180px;}
+        .about-content{width:100%;}
+      }
+      @media(max-width:600px){
+        .about-content h2{font-size:24px;}
+        .about-content p{font-size:14px;}
+      }
+
+      /* PROJECTS */
+      .projects{
+        padding:60px 40px;
+        margin:0;
+        box-shadow:none;
+        border-radius:0;
+        background:none;
+      }
+      @media(max-width:768px){.projects{padding:40px 10px}}
+
+      .section-header{text-align:center;margin-bottom:48px}
+      .section-header h3{font-size:36px;font-weight:700;margin:0;color:var(--navy)}
+      @media(max-width:768px){.section-header h3{font-size:28px}}
+
+      .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+      @media(max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
+      @media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+      .card{
+        background:linear-gradient(135deg,rgba(244,162,56,0.13) 0%,rgba(107,91,168,0.10) 100%);
+        border-radius:1.5em;
+        overflow:visible;
+        box-shadow:0 2px 16px 0 rgba(46,42,143,0.10),0 0.5em 2em 0 rgba(244,162,56,0.08);
+        transition:
+          transform 0.35s cubic-bezier(0.83,0,0.17,1),
+          box-shadow 0.3s cubic-bezier(0.83,0,0.17,1),
+          filter 0.3s cubic-bezier(0.83,0,0.17,1);
+        will-change:transform,box-shadow,filter;
+        perspective:24em;
+        z-index:1;
+        position:relative;
+        cursor:pointer;
+      }
+      .card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 1.5em;
+        z-index: 0;
+        background: radial-gradient(ellipse at 60% 40%,rgba(244,162,56,0.18) 0%,rgba(107,91,168,0.13) 100%);
+        box-shadow: 0 0 2em 0.5em rgba(244,162,56,0.10);
+        filter: blur(0.8em);
+        opacity: 0.85;
+        pointer-events: none;
+        transition: opacity 0.3s cubic-bezier(0.83,0,0.17,1);
+      }
+      .card-inner {
+        position: relative;
+        z-index: 1;
+        background: hsla(0,0%,100%,0.30);
+        box-shadow: 0 0 0 0.1em hsla(0,0%,100%,0.4) inset;
+        backdrop-filter: blur(0.75em);
+        -webkit-backdrop-filter: blur(0.75em);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        transition: background 0.3s cubic-bezier(0.83,0,0.17,1);
+        padding-bottom: 1.5em;
+      }
+      .card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+        border-radius: 0.5em 0.5em 0 0;
+        box-shadow: 0 4px 24px 0 rgba(46,42,143,0.10);
+        background: transparent;
+        margin-bottom: 0.5em;
+        transition: transform 0.35s cubic-bezier(0.83,0,0.17,1), box-shadow 0.3s;
+      }
+      @media(max-width:600px){
+        .card img{height:160px;}
+      }
+      .card-label {
+        font-size: 1em;
+        font-weight: 600;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+        background: linear-gradient(90deg,rgba(46,42,143,0.85),rgba(244,162,56,0.85));
+        border-radius: 0.75em;
+        padding: 0.35em 1.2em;
+        position: absolute;
+        left: 50%;
+        top: 16px;
+        transform: translate(-50%, 0) scale(1);
+        opacity: 0.96;
+        z-index: 2;
+        white-space: nowrap;
+        pointer-events: none;
+        box-shadow: 0 2px 8px 0 rgba(46,42,143,0.10);
+        transition: background 0.3s, box-shadow 0.3s;
+      }
+      .card-body {
+        margin-top: 1.2em;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .card-title {
+        font-size: 1.15em;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 0;
+        text-align: center;
+        letter-spacing: 0.01em;
+      }
+
+      /* Card hover/focus: 3D tilt, scale, glow */
+      .card:focus-visible,
+      .card:hover {
+        transform: scale(1.045) rotateY(8deg) rotateX(-2deg) translateY(-8px);
+        box-shadow:
+          0 16px 48px 0 rgba(46,42,143,0.18),
+          0 2px 8px 0 rgba(244,162,56,0.13),
+          0 0 32px 4px rgba(244,162,56,0.10);
+        filter: brightness(1.08) saturate(1.15) drop-shadow(0 0 16px #f4a23855);
+        z-index: 2;
+      }
+      .card:focus-visible::before,
+      .card:hover::before {
+        opacity: 1;
+        filter: blur(1.2em) brightness(1.1);
+      }
+      .card:focus-visible .card-label,
+      .card:hover .card-label {
+        background: linear-gradient(90deg,rgba(244,162,56,0.95),rgba(46,42,143,0.95));
+        box-shadow: 0 4px 16px 0 rgba(244,162,56,0.18);
+      }
+      .card:focus-visible img,
+      .card:hover img {
+        transform: scale(1.06) rotateZ(-2deg);
+        box-shadow: 0 8px 32px 0 rgba(244,162,56,0.18);
+      }
+
+      /* Add this block for about-wide-image centering and sizing */
+      .about-wide-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 32px auto;
+        width: 100%;
+      }
+      .about-wide-image img {
+        max-width: 1200px;
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px 0 rgba(46,42,143,0.08);
+        background: transparent;
+      }
+
+      @media (max-width: 1200px) {
+        .about-wide-image img {
+          max-width: 98vw;
+          width: 98vw;
+        }
+      }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="brand">
+          <img src="images/vvit.png" alt="VVIT Logo" />
+          <span>VVIT</span>
+        </div>
+        <nav>
+          <a href="home.html">Home</a>
+          <a href="events.html">Events</a>
+          <a href="calendar.html">Calendar</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="teams.html">Teams</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" aria-label="Featured innovation workshop">
+      <div class="hero-left">
+        <h1>Innovation Workshop: Building with VVIT IIC</h1>
+        <p class="subtitle">Join us for an intensive workshop exploring research translation, entrepreneurship support, and hands-on sessions. Limited seats available — register now to secure your spot.</p>
+        <div class="cta-group">
+          <button class="cta" aria-label="Register for event">Register Now</button>
+          <button class="cta cta-secondary" aria-label="Learn more">Learn More</button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="poster-wrap">
+          <div class="poster-tilt-wrapper" id="posterTiltWrapper">
+            <img class="poster" src="images/poster.jpg" alt="Event poster for Innovation Workshop" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" role="separator" aria-hidden="true"></div>
+
+    <!-- ABOUT -->
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="about-img">
+        <img src="images/IIC-Guided-Activities.png" alt="IIC Guided Activities Pyramid" />
+      </div>
+      <div class="about-content">
+        <h2 id="about-title">About VVIT IIC</h2>
+        <p>
+          In the year 2018, the Ministry of Education (MoE) through MoE's Innovation Cell (MIC) launched the Institution's Innovation Council (IIC) program in collaboration with AICTE for Higher Educational Institutions (HEIs) to systematically foster the culture of innovation and start-up ecosystem in education institutions. Primarily, IICs' role is to engage large number of faculty, students and staff in various innovation and entrepreneurship related activities such as ideation, Problem solving, Proof of Concept development, Design Thinking, IPR, project handling and management at Pre-incubation/Incubation stage, etc., so that innovation and entrepreneurship ecosystem gets established and stabilized in HEIs. The IIC model is designed to address the existing challenges/issues in HEIs such as less numbers, occasional and unplanned Innovation & Entrepreneurship (I&E) activities organised in HEIs with low involvement of top leadership, lack of coherence and absence of synergy in resource mobilization, deployment and underutilization of creative potential of youths as major barrier for vibrant I&E ecosystem to emerge from HEIs.
+        </p>
+      </div>
+    </section>
+
+    <!-- WIDE IMAGE: Policy Approach & Action Plan -->
+    <div class="about-wide-image">
+      <img src="images/policy-image.png" alt="Policy Approach & Action Plan for I&E Development in HEIs" />
+    </div>
+
+    <!-- FULL WIDTH TRIANGLE IMAGE -->
+    <div class="about-wide-image">
+      <img src="images/triangle.jpg" alt="National Innovation Contest Innovations & Start-ups Supported" />
+    </div>
+
+    <!-- PROJECTS -->
+    <section class="projects" id="projects">
+      <div class="section-header">
+        <h3>Featured Projects</h3>
+      </div>
+      <div class="grid">
+        <article class="card" tabindex="0">
+          <div class="card-inner">
+            <img src="projects/image (1).png" alt="IoT-Based Healthcare Monitoring System" loading="lazy" />
+            <span class="card-label">IoT-Based Healthcare</span>
+            <div class="card-body">
+              <h4 class="card-title">IoT-Based Healthcare Monitoring System</h4>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" tabindex="0">
+          <div class="card-inner">
+            <img src="projects/image (2).png" alt="Mobile Solar Water Purification System" loading="lazy" />
+            <span class="card-label">Solar Water Purifier</span>
+            <div class="card-body">
+              <h4 class="card-title">Mobile Solar Water Purification System</h4>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" tabindex="0">
+          <div class="card-inner">
+            <img src="projects/image (3).png" alt="Blockchain-Based Digital Payment System" loading="lazy" />
+            <span class="card-label">Blockchain Payments</span>
+            <div class="card-body">
+              <h4 class="card-title">Blockchain-Based Digital Payment System</h4>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background:#111; color:#fff; padding:60px 0 0 0; margin-top:0;">
+      <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px 24px;">
+          <div>
+            <h4 style="font-size:20px;font-weight:700;margin-bottom:16px;">VVIT IIC</h4>
+            <p style="color:#bbb;line-height:1.7;font-size:15px;">Institution's Innovation Council (IIC) promotes innovation and entrepreneurship within academic institutions.</p>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">Shop</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Sell online</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Features</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Examples</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Website editors</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Online retail</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">Press</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Events</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">News</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Awards</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Testimonials</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Online retail</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">About</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#contact" style="color:#bbb;display:block;padding:4px 0;">Contact</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Services</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Team</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Career</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Contacts</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr style="border:0;border-top:1px solid #222;margin:40px 0 24px 0">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;">
+          <div style="display:flex;gap:24px;flex-wrap:wrap;">
+            <a href="#" style="color:#bbb;font-size:14px;">Privacy Policy</a>
+            <a href="#" style="color:#bbb;font-size:14px;">Terms &amp; Conditions</a>
+            <a href="#" style="color:#bbb;font-size:14px;">Code of Conduct</a>
+          </div>
+          <div style="display:flex;gap:16px;">
+            <a href="#" aria-label="Twitter" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F426;</span></a>
+            <a href="#" aria-label="Instagram" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F4F7;</span></a>
+            <a href="#" aria-label="Facebook" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F5E8;</span></a>
+            <a href="#" aria-label="Pinterest" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F4CC;</span></a>
+          </div>
+        </div>
+        <p style="color:#888;font-size:14px;margin:32px 0 0 0;">&copy; <span id="year"></span> Institution's Innovation Council. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if(target) target.scrollIntoView({behavior: 'smooth'});
+      });
+    });
+
+    // --- Poster tilt animation ---
+    (function() {
+      const wrapper = document.getElementById('posterTiltWrapper');
+      if (!wrapper) return;
+      const poster = wrapper.querySelector('.poster');
+      let rafId = null;
+
+      function clamp(value, min = 0, max = 100) {
+        return Math.min(Math.max(value, min), max);
+      }
+      function round(value, precision = 3) {
+        return parseFloat(value.toFixed(precision));
+      }
+      function adjust(value, fromMin, fromMax, toMin, toMax) {
+        return round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin));
+      }
+      function easeInOutCubic(x) {
+        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+      }
+      function updatePosterTransform(offsetX, offsetY) {
+        const width = poster.clientWidth;
+        const height = poster.clientHeight;
+        const percentX = clamp((100 / width) * offsetX);
+        const percentY = clamp((100 / height) * offsetY);
+        const centerX = percentX - 50;
+        const centerY = percentY - 50;
+        wrapper.style.setProperty('--poster-pointer-x', `${percentX}%`);
+        wrapper.style.setProperty('--poster-pointer-y', `${percentY}%`);
+        wrapper.style.setProperty('--poster-pointer-from-center', `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`);
+        wrapper.style.setProperty('--poster-pointer-from-top', `${percentY / 100}`);
+        wrapper.style.setProperty('--poster-pointer-from-left', `${percentX / 100}`);
+        wrapper.style.setProperty('--poster-rotate-x', `${round(-(centerX / 5))}deg`);
+        wrapper.style.setProperty('--poster-rotate-y', `${round(centerY / 4)}deg`);
+      }
+      function createSmoothAnimation(duration, startX, startY) {
+        const startTime = performance.now();
+        const targetX = poster.clientWidth / 2;
+        const targetY = poster.clientHeight / 2;
+        function animationLoop(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = clamp(elapsed / duration);
+          const easedProgress = easeInOutCubic(progress);
+          const currentX = adjust(easedProgress, 0, 1, startX, targetX);
+          const currentY = adjust(easedProgress, 0, 1, startY, targetY);
+          updatePosterTransform(currentX, currentY);
+          if (progress < 1) {
+            rafId = requestAnimationFrame(animationLoop);
+          }
+        }
+        rafId = requestAnimationFrame(animationLoop);
+      }
+      wrapper.addEventListener('pointerenter', () => {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        wrapper.classList.add('active');
+      });
+      wrapper.addEventListener('pointermove', (e) => {
+        const rect = poster.getBoundingClientRect();
+        updatePosterTransform(e.clientX - rect.left, e.clientY - rect.top);
+      });
+      wrapper.addEventListener('pointerleave', (e) => {
+        createSmoothAnimation(600, e.offsetX, e.offsetY);
+        wrapper.classList.remove('active');
+      });
+      // Initial animation
+      const initialX = poster.clientWidth - 70;
+      const initialY = 60;
+      updatePosterTransform(initialX, initialY);
+      createSmoothAnimation(1500, initialX, initialY);
+    })();
+  </script>
+</body>
+</html>
