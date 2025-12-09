@@ -6,7 +6,21 @@
   <title>IIC — Teams</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* =========================================
+       1. GLOBAL VARIABLES & THEME (MERGED)
+       ========================================= */
     :root{
+      /* Home Page Theme Vars */
+      --navy:#2E2A8F;
+      --orange:#F4A238;
+      --red:#D92E2E;
+      --purple:#6B5BA8;
+      --bg:#FAF9F7;
+      --card-bg:#FFFFFF;
+      --muted:#6b6b6b;
+      --border:#E8E7E3;
+      
+      /* Teams Page Specific Vars (Kept for cards) */
       --iic-blue:#1E3A8A;
       --iic-orange:#F97316;
       --iic-light:#F0F9FF;
@@ -17,57 +31,100 @@
     }
 
     *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      font-family:Poppins,system-ui;
-      background:#F0F9FF;
-      color:var(--text-dark);
-      position:relative;
-    }
+    html,body{height:100%;margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;scroll-behavior:smooth}
+    a{color:inherit;text-decoration:none}
 
-      body::before{
-      content: '';
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      z-index: 0;
+    /* ==== BACKGROUND LOGO WATERMARK (FROM HOME PAGE) ==== */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.02) 100%),
+        url("images/IIC.png") center/500px auto no-repeat;
+      opacity:0.15;
+      z-index:-1;
+      transform:translateZ(0);
       pointer-events: none;
-      opacity: 0.15;
-      filter: brightness(1.1);
     }
-    a{text-decoration:none;color:inherit}
 
+    .wrap{
+      width:100vw;
+      margin:0;
+      padding:0;
+      background: transparent !important;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* =========================================
+       2. HEADER STYLES (FROM HOME PAGE)
+       ========================================= */
     header{
       display:flex;
-      justify-content:space-between;
+      justify-content:center;
       align-items:center;
-      padding:20px 40px;
-      background:rgba(255,255,255,0.9);
-      backdrop-filter:blur(10px);
-      position:sticky;
-      top:0;
+      padding:20px 40px 20px 40px;
+      margin-bottom:0;
+      position:relative;
+      background:transparent !important;
       z-index:100;
-      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+      box-shadow:none;
     }
-    .brand{font-weight:700;color:var(--iic-blue);font-size:18px;display:flex;align-items:center;gap:10px}
-    nav{display:flex;gap:32px}
-    nav a{font-size:14px;color:var(--text-muted);font-weight:500;transition:.3s}
-    nav a:hover{color:var(--iic-orange)}
-
-      @media(max-width:768px){
-      header{padding:16px 20px}
-      nav{gap:16px;font-size:12px}
-      body::before{width:300px;height:300px;opacity:0.1;}
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      gap: 48px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:18px;
+      color:var(--navy)
+    }
+    .brand img{
+      height:40px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,0.02));
+    }
+    nav{
+      display:flex;
+      gap:32px;
+      align-items:center
+    }
+    nav a{
+      font-size:14px;
+      color:var(--muted);
+      transition:color .2s ease;
+      font-weight:500
+    }
+    nav a:hover{color:var(--navy)}
+    @media(max-width:768px){
+      nav{display:none}
+      header{padding:16px 0;margin-bottom:8px}
+      .brand{font-size:16px}
+      .header-inner{justify-content: flex-start; padding: 0 20px;}
     }
 
-    main{max-width:1400px;margin:auto;padding:40px 20px 80px;position:relative;z-index:1}
+    /* =========================================
+       3. TEAMS PAGE SPECIFIC STYLES
+       ========================================= */
+    
+    main{
+        max-width:1400px;
+        margin:auto;
+        padding:40px 20px 80px;
+        position:relative;
+        z-index:1;
+        flex: 1; /* Ensures footer stays at bottom if content is short */
+    }
 
     /* HERO SECTION */
     .hero-teams{
@@ -227,8 +284,8 @@
     }
 
     .member-avatar{
-      width:120px;
-      height:120px;
+      width:180px;
+      height:180px;
       border-radius:50%;
       background:linear-gradient(135deg, rgba(30,58,138,0.1), rgba(249,115,22,0.1));
       display:flex;
@@ -241,7 +298,12 @@
       margin-bottom:20px;
       transition: all 0.4s ease;
     }
-
+     .member-avatar img {
+       width: 100%;
+       height: 100%;
+       object-fit: cover;
+       display: block;
+    }
     .member-card:hover .member-avatar{
       animation: pulseGlow 1.5s infinite;
       border-color: var(--iic-orange);
@@ -329,17 +391,6 @@
       opacity:0;
     }
 
-    footer{
-      background:rgba(30,58,138,0.95);
-      color:rgba(255,255,255,0.9);
-      padding:40px 20px;
-      text-align:center;
-      font-size:14px;
-      margin-top:80px;
-      position:relative;
-      z-index:1;
-    }
-
     /* ANIMATIONS */
     @keyframes fadeInUp {
       from { opacity:0; transform:translate3d(0,30px,0); }
@@ -383,410 +434,634 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand">IIC</div>
-    <nav>
-      <a href="home.html">Home</a>
-      <a href="events.html">Events</a>
-      <a href="calendar.html">Calendar</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="teams.html">Teams</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+  <div class="wrap">
+    <header>
+      <div class="header-inner">
+        <div class="brand">
+          <img src="images/vvit.png" alt="VVIT Logo" />
+          <span>VVIT</span>
+        </div>
+        <nav>
+          <a href="home.html">Home</a>
+          <a href="events.html">Events</a>
+          <a href="calendar.html">Calendar</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="teams.html">Teams</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
 
-  <main>
-    <!-- HERO SECTION WITH ANIMATED COUNTER -->
-    <div class="hero-teams">
-      <div class="hero-teams-content">
-        <h1>Meet Our Team</h1>
-        <p>A collective of passionate innovators, mentors, and leaders dedicated to fostering entrepreneurship and driving meaningful change across our institution.</p>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <span class="stat-number" data-target="28">0</span>
-            <span class="stat-label">Team Members</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number" data-target="7">0</span>
-            <span class="stat-label">Departments</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number" data-target="100" data-plus="true">0</span>
-            <span class="stat-label">Events Organized</span>
+    <main>
+      <div class="hero-teams">
+        <div class="hero-teams-content">
+          <h1>Meet Our Team</h1>
+          <p>A collective of passionate innovators, mentors, and leaders dedicated to fostering entrepreneurship and driving meaningful change across our institution.</p>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number" data-target="29">0</span>
+              <span class="stat-label">Team Members</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" data-target="7">0</span>
+              <span class="stat-label">Departments</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" data-target="100" data-plus="true">0</span>
+              <span class="stat-label">Events Organized</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- IIC CO-ORDINATORS -->
-    <div class="team-section">
-      <div class="section-intro">
-        <div class="section-icon">🎓</div>
-        <div class="section-text">
-          <h2>IIC Co-ordinators</h2>
-          <p>Our faculty coordinators provide academic guidance and institutional support, bridging the gap between innovation initiatives and curriculum integration. They ensure IIC's alignment with educational objectives while fostering an entrepreneurial ecosystem.</p>
+      <div class="team-section">
+        <div class="section-intro">
+          <div class="section-icon">🎓</div>
+          <div class="section-text">
+            <h2>IIC Co-ordinators</h2>
+            <p>Our faculty coordinators provide academic guidance and institutional support, bridging the gap between innovation initiatives and curriculum integration. They ensure IIC's alignment with educational objectives while fostering an entrepreneurial ecosystem.</p>
+          </div>
+        </div>
+
+         <div class="team-grid">
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/principal.png" alt="YMR" /></div>
+            <h3 class="member-name">Dr Y Mallikarjuna Reddy</h3>
+            <span class="member-role">Chairman</span>
+            <p class="member-bio">Principal</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar initials-badge">AA</div>
+            <h3 class="member-name">Dr AVS Ashok</h3>
+            <span class="member-role">President</span>
+            <p class="member-bio">Associate Professor, S&H</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Mr. Toseef Ahmed</h3>
+            <span class="member-role">Vice President</span>
+            <p class="member-bio">Mechanical</p>
+          </div>
+
+     <!--  <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Mirza Mahaboob Baig</h3>
+            <span class="member-role">Member</span>
+            <p class="member-bio">Civil</p>
+          </div> 
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Dr Md K M Farooqi</h3>
+            <span class="member-role">Member</span>
+            <p class="member-bio">Mechanical</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/soma.png" alt="soma" /></div>
+            <h3 class="member-name">Dr KVL Somasekhar</h3>
+            <span class="member-role">Member</span
+            <p class="member-bio">Mechanical</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Dr Giri Babu Kande</h3>
+            <span class="member-role">Startup Activity Coordinator</span>
+            <p class="member-bio">ECE</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">PR Krishna Prasad</h3>
+            <span class="member-role">Member</span>
+            <p class="member-bio">CSE</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">P GuruPrasad</h3>
+            <span class="member-role">IRP Activity Coordinator</span>
+            <p class="member-bio">S&H, Faculty MHRD</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Dr U Madhavaiah</h3>
+            <span class="member-role">Internship Coordinator</span>
+            <p class="member-bio">S&H, Placements</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Dr I Lakshama Reddy</h3>
+            <span class="member-role">ARIIA Coordinator</span>
+            <p class="member-bio">Assistant Professor, S&H</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Dr Nageswara Rao</h3>
+            <span class="member-role">Innovation Activity</span>
+            <p class="member-bio">Professor, CSE</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Dr T Madhu Mohan</h3>
+            <span class="member-role">NIRF Coordinator</span>
+            <p class="member-bio">Professor</p>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">👤</div>
+            <h3 class="member-name">Mrs. B Padmasree</h3>
+            <span class="member-role">Social Media</span>
+            <p class="member-bio">S&H</p>
+          </div>
+        </div> -->
         </div>
       </div>
 
-      <div class="team-grid leadership">
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Faculty Name</h3>
-          <span class="member-role">IIC Co-ordinator</span>
-          <p class="member-bio">Experienced faculty member guiding students in innovation and entrepreneurship initiatives.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+      <div class="divider"></div>
+
+      <div class="team-section">
+        <div class="section-intro reverse">
+          <div class="section-icon">👑</div>
+          <div class="section-text">
+            <h2>IIC Presidents</h2>
+            <p>Student leaders who spearhead IIC activities and represent the innovation council. They coordinate between various teams, drive strategic initiatives, and ensure effective execution of all programs while maintaining a vibrant entrepreneurial culture on campus.</p>
           </div>
         </div>
 
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Faculty Name</h3>
-          <span class="member-role">IIC Co-ordinator</span>
-          <p class="member-bio">Dedicated educator fostering entrepreneurial mindset and supporting innovative projects.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+        <div class="team-grid leadership">
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/kalyan.png" alt="Pavan Kalyan" /></div>
+            <h3 class="member-name">S.Pavan Kalyan</h3>
+            <span class="member-role">IIC President</span>
+            <p class="member-bio">Leading IIC initiatives with vision and dedication to foster innovation culture.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/jessy.png" alt="jessy" /></div>
+            <h3 class="member-name">M.Jessy Gladwin</h3>
+            <span class="member-role">IIC Vice-President</span>
+            <p class="member-bio">Driving entrepreneurial excellence and coordinating team efforts across departments.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/dinesh.png" alt="dinesh" /></div>
+            <h3 class="member-name">T.Dinesh</h3>
+            <span class="member-role">IIC Secretary</span>
+            <p class="member-bio">Leading IIC initiatives with vision and dedication.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <!-- IIC PRESIDENTS -->
-    <div class="team-section">
-      <div class="section-intro reverse">
-        <div class="section-icon">👑</div>
-        <div class="section-text">
-          <h2>IIC Presidents</h2>
-          <p>Student leaders who spearhead IIC activities and represent the innovation council. They coordinate between various teams, drive strategic initiatives, and ensure effective execution of all programs while maintaining a vibrant entrepreneurial culture on campus.</p>
+      <div class="team-section">
+        <div class="section-intro">
+          <div class="section-icon">🤝</div>
+          <div class="section-text">
+            <h2>Public Relations</h2>
+            <p>Our PR team builds and maintains relationships with external stakeholders, media, industry partners, and alumni. They manage IIC's public image, coordinate outreach programs, and create strategic partnerships that enhance our institution's innovation ecosystem.</p>
+          </div>
+        </div>
+
+        <div class="team-grid">
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/nithin.png" alt="nithin" /></div>
+            <h3 class="member-name">P.Nithin</h3>
+            <span class="member-role">PR Team Head</span>
+            <p class="member-bio">Managing external relations and building strategic partnerships.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/jessy.png" alt="jessy" /></div>
+            <h3 class="member-name">M.Jessy Gladwin</h3>
+            <span class="member-role">PR Team</span>
+            <p class="member-bio">Coordinating outreach initiatives and stakeholder engagement.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/bindu.png" alt="jessy" /></div>
+            <h3 class="member-name">Bindu Meghana</h3>
+            <span class="member-role">PR Team</span>
+            <p class="member-bio">Facilitating communication with media and industry partners.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/subhani.png" alt="subhani" /></div>
+            <h3 class="member-name">Subhani</h3>
+            <span class="member-role">PR Team</span>
+            <p class="member-bio">Facilitating communication with media and industry partners.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/udvika.png" alt="udvika" /></div>
+            <h3 class="member-name">Y.Udvika</h3>
+            <span class="member-role">PR Team</span>
+            <p class="member-bio">Enhancing IIC's visibility and managing corporate relations.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/nikhila.png" alt="nikhila" /></div>
+            <h3 class="member-name">K.Nikhila</h3>
+            <span class="member-role">PR Team</span>
+            <p class="member-bio">Developing community partnerships and alumni engagement programs.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/rohit.png" alt="rohit" /></div>
+            <h3 class="member-name">K.Rohit Sai</h3>
+            <span class="member-role">PR Team</span>
+            <p class="member-bio">Developing community partnerships and alumni engagement programs.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
         </div>
       </div>
 
-      <div class="team-grid leadership">
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Student Name</h3>
-          <span class="member-role">IIC President</span>
-          <p class="member-bio">Leading IIC initiatives with vision and dedication to foster innovation culture.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+      <div class="divider"></div>
+
+      <div class="team-section">
+        <div class="section-intro">
+          <div class="section-icon">💻</div>
+          <div class="section-text">
+            <h2>Web Designing</h2>
+            <p>The web designing team develops and maintains IIC's digital infrastructure. They create user-friendly websites, design interfaces, implement features, ensure responsive design, and provide technical solutions that enhance online user experience and accessibility.</p>
           </div>
         </div>
 
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Student Name</h3>
-          <span class="member-role">IIC President</span>
-          <p class="member-bio">Driving entrepreneurial excellence and coordinating team efforts across departments.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+        <div class="team-grid">
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/chaitu.png" alt="jessy" /></div>
+            <h3 class="member-name">C. Chaitanya</h3>
+            <span class="member-role">Web Design Team Head</span>
+            <p class="member-bio">Developing and maintaining IIC's website and digital platforms.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/harsha.png" alt="harsha" /></div>
+            <h3 class="member-name">J. Harsha Vardhan</h3>
+            <span class="member-role">Web Design Team</span>
+            <p class="member-bio">Developing and maintaining IIC's website and digital platforms.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/sarika.png" alt="sarika" /></div>
+            <h3 class="member-name">Sarika</h3>
+            <span class="member-role">Web Design Team</span>
+            <p class="member-bio">Managing digital assets and ensuring the website reflects the latest IIC initiatives.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/navya.png" alt="jessy" /></div>
+            <h3 class="member-name">Navya</h3>
+            <span class="member-role">Web Design Team</span>
+            <p class="member-bio">Overseeing the technical architecture and user interface of IIC's digital ecosystem.</p>
+           <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
         </div>
       </div>
-    </div>
+      <div class="divider"></div>
 
-    <div class="divider"></div>
+      <div class="team-section">
+        <div class="section-intro reverse">
+          <div class="section-icon">🎉</div>
+          <div class="section-text">
+            <h2>Events</h2>
+            <p>The events team conceptualizes and executes all IIC programs including hackathons, workshops, competitions, and seminars. They handle logistics, vendor coordination, participant management, and ensure every event creates memorable learning experiences that inspire innovation.</p>
+          </div>
+        </div>
 
-    <!-- PUBLIC RELATIONS -->
-    <div class="team-section">
-      <div class="section-intro">
-        <div class="section-icon">🤝</div>
-        <div class="section-text">
-          <h2>Public Relations</h2>
-          <p>Our PR team builds and maintains relationships with external stakeholders, media, industry partners, and alumni. They manage IIC's public image, coordinate outreach programs, and create strategic partnerships that enhance our institution's innovation ecosystem.</p>
+        <div class="team-grid">
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/vchaitu.png" alt="jessy" /></div>
+            <h3 class="member-name">V. Chaitanya</h3>
+            <span class="member-role">Events Team Head</span>
+            <p class="member-bio">Planning and executing innovative programs and workshops.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/kalyan.png" alt="Pavan Kalyan" /></div>
+            <h3 class="member-name">S.Pavan Kalyan</h3>
+            <span class="member-role">Events Team</span>
+            <p class="member-bio">Coordinating logistics and ensuring seamless event execution.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/shabana.png" alt="shabana" /></div>
+            <h3 class="member-name">Shaik Shabana</h3>
+            <h3 class="member-name">Member Name</h3>
+            <span class="member-role">Events Team</span>
+            <p class="member-bio">Managing participant engagement and event registration processes.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/prasanna.png" alt="Prasanna" /></div>
+            <h3 class="member-name">V.Prasanna Kumari</h3>
+            <span class="member-role">Events Team</span>
+            <p class="member-bio">Handling venue coordination and technical requirements for events.</p>
+           <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+           <div class="member-avatar"><img src="images/veera.png" alt="Pavan Kalyan" /></div>
+            <h3 class="member-name">Ch. Veera Brahamam</h3>
+            <span class="member-role">Events Team</span>
+            <p class="member-bio">Supporting event operations and ensuring quality experiences.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/jyothi.png" alt="Prasanna" /></div>
+            <h3 class="member-name">P.Naga Jyothi</h3>
+            <span class="member-role">Events Team</span>
+            <p class="member-bio">Handling venue coordination and technical requirements for events.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
         </div>
       </div>
 
-      <div class="team-grid">
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">PR Team</span>
-          <p class="member-bio">Managing external relations and building strategic partnerships.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+      <div class="divider"></div>
+
+      <div class="team-section">
+        <div class="section-intro">
+          <div class="section-icon">✍️</div>
+          <div class="section-text">
+            <h2>Drafts</h2>
+            <p>The drafts team handles all documentation, proposal writing, and official communications. They craft compelling narratives for funding applications, prepare reports, design newsletters, and ensure professional documentation of all IIC activities and achievements.</p>
           </div>
         </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">PR Team</span>
-          <p class="member-bio">Coordinating outreach initiatives and stakeholder engagement.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+
+        <div class="team-grid">
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/narayana.png" alt="Pavan Kalyan" /></div>
+            
+            <h3 class="member-name">B. Narayana</h3>
+            <span class="member-role">Drafts Team Head</span>
+            <p class="member-bio">Creating compelling content and official documentation for IIC.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">PR Team</span>
-          <p class="member-bio">Facilitating communication with media and industry partners.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/avinash.png" alt="Pavan Kalyan" /></div>
+            <h3 class="member-name">Avinash</h3>
+            <span class="member-role">Drafts Team</span>
+            <p class="member-bio">Writing proposals and preparing professional reports.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">PR Team</span>
-          <p class="member-bio">Enhancing IIC's visibility and managing corporate relations.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/lakshmi.png" alt="Pavan Kalyan" /></div>
+            <h3 class="member-name">A.Lakshmi</h3>
+            <span class="member-role">Drafts Team</span>
+            <p class="member-bio">Designing newsletters and crafting engaging narratives.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">PR Team</span>
-          <p class="member-bio">Developing community partnerships and alumni engagement programs.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+
+            <div class="member-avatar"><img src="images/srujuna.png" alt="srujuna" /></div>
+            <h3 class="member-name">Bhavya Srujuna</h3>
+            <span class="member-role">Drafts Team</span>
+            <p class="member-bio">Managing documentation and maintaining records of activities.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
+          </div>
+          <div class="member-card">
+           <div class="member-avatar"><img src="images/keerthi.png" alt="keerthi" /></div>
+            <h3 class="member-name">K.Keerthi</h3>
+            <span class="member-role">Drafts Team</span>
+            <p class="member-bio">Editing and proofreading all official communications.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <!-- EVENTS TEAM -->
-    <div class="team-section">
-      <div class="section-intro reverse">
-        <div class="section-icon">🎉</div>
-        <div class="section-text">
-          <h2>Events</h2>
-          <p>The events team conceptualizes and executes all IIC programs including hackathons, workshops, competitions, and seminars. They handle logistics, vendor coordination, participant management, and ensure every event creates memorable learning experiences that inspire innovation.</p>
+      <div class="team-section">
+        <div class="section-intro reverse">
+          <div class="section-icon">📱</div>
+          <div class="section-text">
+            <h2>Social Media</h2>
+            <p>Our social media team amplifies IIC's digital presence across platforms. They create engaging content, manage community interactions, track analytics, run campaigns, and ensure consistent brand messaging that resonates with students, entrepreneurs, and stakeholders.</p>
+          </div>
         </div>
-      </div>
 
-      <div class="team-grid">
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Events Team</span>
-          <p class="member-bio">Planning and executing innovative programs and workshops.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+        <div class="team-grid">
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/jagadish.png" alt="Pavan Kalyan" /></div>
+            <h3 class="member-name">P. Jagadish</h3>
+            <span class="member-role">S M D (design) Head</span>
+            <p class="member-bio">Creating visual content and graphics for digital platforms.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Events Team</span>
-          <p class="member-bio">Coordinating logistics and ensuring seamless event execution.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/bhavani.png" alt="bhavani" /></div>
+            <h3 class="member-name">Bhavani Shankar</h3>
+            <span class="member-role">S M D (managing) Head</span>
+            <p class="member-bio">Managing IIC's social media presence and engagement strategies.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Events Team</span>
-          <p class="member-bio">Managing participant engagement and event registration processes.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/jayanth.png" alt="Murali" /></div>
+            <h3 class="member-name">A.Naga Jayanth</h3>
+            <span class="member-role">Social Media Team</span>
+            <p class="member-bio">Running campaigns and tracking social media analytics.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Events Team</span>
-          <p class="member-bio">Handling venue coordination and technical requirements for events.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/thanuja.png" alt="tanuja" /></div>
+            <h3 class="member-name">V. Thanuja</h3>
+            <span class="member-role">Social Media Team</span>
+            <p class="member-bio">Crafting compelling visual narratives to showcase IIC's vibrant culture and events.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Events Team</span>
-          <p class="member-bio">Supporting event operations and ensuring quality experiences.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+             <div class="member-avatar"><img src="images/dinesh.png" alt="dinesh" /></div>
+            <h3 class="member-name">T.Dinesh Reddy</h3>
+            <span class="member-role">Social Media Team</span>
+            <p class="member-bio">Curating IIC's digital identity and fostering community interaction across social platforms.</p>
+           <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- DRAFTS TEAM -->
-    <div class="team-section">
-      <div class="section-intro">
-        <div class="section-icon">✍️</div>
-        <div class="section-text">
-          <h2>Drafts</h2>
-          <p>The drafts team handles all documentation, proposal writing, and official communications. They craft compelling narratives for funding applications, prepare reports, design newsletters, and ensure professional documentation of all IIC activities and achievements.</p>
-        </div>
-      </div>
-
-      <div class="team-grid">
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Drafts Team</span>
-          <p class="member-bio">Creating compelling content and official documentation for IIC.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/murali.png" alt="Murali" /></div>
+            <h3 class="member-name">B. Murali Krishna</h3>
+            <span class="member-role">Social Media Team</span>
+            <p class="member-bio">Running and tracking social media analytics.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Drafts Team</span>
-          <p class="member-bio">Writing proposals and preparing professional reports.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Drafts Team</span>
-          <p class="member-bio">Designing newsletters and crafting engaging narratives.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Drafts Team</span>
-          <p class="member-bio">Managing documentation and maintaining records of activities.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Drafts Team</span>
-          <p class="member-bio">Editing and proofreading all official communications.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
+          <div class="member-card">
+            <div class="member-avatar"><img src="images/manasa.png" alt="Manasa" /></div>
+            <h3 class="member-name">T. Manasa Jyothi</h3>
+            <span class="member-role">Social Media Team</span>
+            <p class="member-bio">Developing content calendars and maintaining brand consistency.</p>
+            <!--<div class="member-social">
+              <a href="#" class="social-btn">in</a>
+              <a href="#" class="social-btn">@</a>
+            </div>-->
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <div class="divider"></div>
-
-    <!-- SOCIAL MEDIA TEAM -->
-    <div class="team-section">
-      <div class="section-intro reverse">
-        <div class="section-icon">📱</div>
-        <div class="section-text">
-          <h2>Social Media</h2>
-          <p>Our social media team amplifies IIC's digital presence across platforms. They create engaging content, manage community interactions, track analytics, run campaigns, and ensure consistent brand messaging that resonates with students, entrepreneurs, and stakeholders.</p>
+    <footer style="background:#111; color:#fff; padding:60px 0 0 0; margin-top:0;">
+      <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px 24px;">
+          <div>
+            <h4 style="font-size:20px;font-weight:700;margin-bottom:16px;">VVIT IIC</h4>
+            <p style="color:#bbb;line-height:1.7;font-size:15px;">Institution's Innovation Council (IIC) promotes innovation and entrepreneurship within academic institutions.</p>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">Shop</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Sell online</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Features</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Examples</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Website editors</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Online retail</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">Press</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Events</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">News</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Awards</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Testimonials</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Online retail</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 style="font-size:15px;font-weight:600;margin-bottom:12px;">About</h5>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><a href="#contact" style="color:#bbb;display:block;padding:4px 0;">Contact</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Services</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Team</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Career</a></li>
+              <li><a href="#" style="color:#bbb;display:block;padding:4px 0;">Contacts</a></li>
+            </ul>
+          </div>
         </div>
+        <hr style="border:0;border-top:1px solid #222;margin:40px 0 24px 0">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;">
+          <div style="display:flex;gap:24px;flex-wrap:wrap;">
+            <a href="#" style="color:#bbb;font-size:14px;">Privacy Policy</a>
+            <a href="#" style="color:#bbb;font-size:14px;">Terms &amp; Conditions</a>
+            <a href="#" style="color:#bbb;font-size:14px;">Code of Conduct</a>
+          </div>
+          <div style="display:flex;gap:16px;">
+            <a href="#" aria-label="Twitter" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F426;</span></a>
+            <a href="#" aria-label="Instagram" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F4F7;</span></a>
+            <a href="#" aria-label="Facebook" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F5E8;</span></a>
+            <a href="#" aria-label="Pinterest" style="color:#bbb;font-size:18px;"><span style="font-family:sans-serif;">&#x1F4CC;</span></a>
+          </div>
+        </div>
+        <p style="color:#888;font-size:14px;margin:32px 0 0 0;">&copy; <span id="year"></span> Institution's Innovation Council. All rights reserved.</p>
       </div>
+    </footer>
+  </div>
 
-      <div class="team-grid">
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Social Media Team</span>
-          <p class="member-bio">Managing IIC's social media presence and engagement strategies.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Social Media Team</span>
-          <p class="member-bio">Creating visual content and graphics for digital platforms.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Social Media Team</span>
-          <p class="member-bio">Running campaigns and tracking social media analytics.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Social Media Team</span>
-          <p class="member-bio">Building online community and managing audience interactions.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Social Media Team</span>
-          <p class="member-bio">Developing content calendars and maintaining brand consistency.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- WEB DESIGNING TEAM -->
-    <div class="team-section">
-      <div class="section-intro">
-        <div class="section-icon">💻</div>
-        <div class="section-text">
-          <h2>Web Designing</h2>
-          <p>The web designing team develops and maintains IIC's digital infrastructure. They create user-friendly websites, design interfaces, implement features, ensure responsive design, and provide technical solutions that enhance online user experience and accessibility.</p>
-        </div>
-      </div>
-
-      <div class="team-grid">
-        <div class="member-card">
-          <div class="member-avatar">Person</div>
-          <h3 class="member-name">Member Name</h3>
-          <span class="member-role">Web Design Team</span>
-          <p class="member-bio">Developing and maintaining IIC's website and digital platforms.</p>
-          <div class="member-social">
-            <a href="#" class="social-btn">in</a>
-            <a href="#" class="social-btn">@</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2025 IIC. All rights reserved.
-  </footer>
-
-  <!-- FINAL ANIMATION + COUNTER SCRIPT -->
   <script>
+     // Year Script from Home Page
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Teams Page Animations and Logic
     document.addEventListener('DOMContentLoaded', () => {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
